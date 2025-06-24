@@ -1,13 +1,14 @@
 import primaryFont from "./fonts";
+import googleSignIn from "@/app/lib/google-signin";
 
 export default function Home() {
     return (
         <div>
             <h1>Welcome to APEX</h1>
-            <div>
+            <form action={googleSignIn}>
                 <p>Get started:</p>
-                <input type="button" className={`${primaryFont.className}`}value="Sign in with Google" />
-            </div>
+                <button type="submit" className={`${primaryFont.className}`}>Sign in with Google</button>
+            </form>
         </div>
     );
 }
