@@ -3,5 +3,5 @@
 import { signIn } from '@/auth';
 
 export default async function googleSignIn() {
-    await signIn("google");
+    await signIn("google", { redirectTo: '/ai' });
 } 
