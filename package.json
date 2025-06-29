@@ -13,6 +13,7 @@
         "@prisma/client": "^6.10.1",
         "next": "15.3.4",
         "next-auth": "^5.0.0-beta.29",
+        "openai": "^5.8.2",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },
