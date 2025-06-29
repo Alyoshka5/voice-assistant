@@ -1,5 +1,5 @@
 import { auth } from "@/auth"
-import signOut from "@/app/lib/signout";
+import signOut from "@/app/actions/signout";
 
 export default async function Assistant() {
     const session = await auth();
