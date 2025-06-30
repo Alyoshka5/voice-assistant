@@ -3,8 +3,8 @@
 import getOpenAIResponse from "@/app/actions/getOpenAIResponse";
 
 export default function useOpenAI() {
-    const getResponse = async (prompt: string) => {
-        return await getOpenAIResponse(prompt);
+    const getResponse = async (request: string) => {
+        return await getOpenAIResponse(request);
     }
 
     return {

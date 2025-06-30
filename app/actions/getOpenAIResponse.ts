@@ -14,16 +14,16 @@ If you're unsure, return "other". Do not extract details or guess.
 
 `;
 
-export default async function getOpenAIResponse(prompt: string) {
-    const promptCategoryResponse = await openAIClient.responses.create({
+export default async function getOpenAIResponse(request: string) {
+    const requestCategoryResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-nano',
         input: [
             {role: 'system', content: systemMessage},
-            {role: 'user', content: prompt},
+            {role: 'user', content: request},
         ],
     });
 
-    const promptCategory = promptCategoryResponse.output_text;
+    const requestCategory = requestCategoryResponse.output_text;
 
-    return promptCategory;
+    return requestCategory;
 }
