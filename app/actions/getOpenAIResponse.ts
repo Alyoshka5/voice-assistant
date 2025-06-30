@@ -11,7 +11,6 @@ You are a voice assistant. Classify the user's request into one of these categor
 Respond with a just the category name, without any additional text or explanation.
 
 If you're unsure, return "other". Do not extract details or guess.
-
 `;
 
 export default async function getOpenAIResponse(request: string) {
