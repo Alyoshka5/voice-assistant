@@ -1,5 +1,5 @@
 
-async function getCoordinates(location:any) {
+async function getCoordinates(location:string) {
     const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location)}&format=json&limit=1`;
     
     try {
