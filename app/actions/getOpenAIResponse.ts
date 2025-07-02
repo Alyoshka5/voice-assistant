@@ -1,6 +1,9 @@
 'use server'
 
 import openAIClient from "@/app/lib/openai";
+import prisma from "@/app/lib/db";
+import { auth } from "@/auth";
+import { Role } from "@prisma/client";
 
 const systemMessage = `
 You are a voice assistant. Classify the user's request into one of these categories:
@@ -14,6 +17,10 @@ If you're unsure, return "other". Do not extract details or guess.
 `;
 
 export default async function getOpenAIResponse(request: string) {
+    const session = await auth();
+    const userEmail = session?.user?.email;
+    if (!userEmail) return '';
+
     const requestCategoryResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-nano',
         input: [
@@ -23,6 +30,40 @@ export default async function getOpenAIResponse(request: string) {
     });
 
     const requestCategory = requestCategoryResponse.output_text;
+
+    const previousMessages = await prisma.message.findMany({
+        where: {
+            user: {
+                email: userEmail,
+            },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+    });
+
+    await prisma.message.create({
+        data: {
+            role: Role.user,
+            content: request,
+            user: {
+                connect: {
+                    email: userEmail
+                }
+            }
+        },
+    });
+
+    await prisma.message.create({
+        data: {
+            role: Role.assistant,
+            content: requestCategory,
+            user: {
+                connect: {
+                    email: userEmail
+                }
+            }
+        },
+    });
 
     return requestCategory;
 }
