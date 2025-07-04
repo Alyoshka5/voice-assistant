@@ -22,12 +22,20 @@ export default async function weatherFunctionController(conversation: Conversati
     let output: OpenAIResponseOutput = openaiResponse.output[0];
     const args = JSON.parse(output.arguments || '{}');
     const location: string = args?.location;
+
+    let coordinates: Coordinates;
+
+    const openaiDefaultLocations = ['your location', 'current location', 'my location', 'user location']; //common default values returned by openai model
     
-    if (!location) {
-        return 'Please provide a location.';
+    if (location && !openaiDefaultLocations.includes(location.toLowerCase())) {
+        coordinates = await getCoordinates(location);
+    } else {
+        if (userRequestDetails.coordinates) {
+            coordinates = userRequestDetails.coordinates;
+        } else {
+            return 'Sorry, I could not get the weather information you asked for. Can you please provide a location?';
+        }
     }
-    
-    const coordinates: Coordinates = await getCoordinates(location);
 
     if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
         return 'Sorry, I could not find the location you requested. Please try again with a different location.';
