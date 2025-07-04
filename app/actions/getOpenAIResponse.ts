@@ -4,6 +4,7 @@ import openAIClient from "@/app/lib/openai";
 import prisma from "@/app/lib/db";
 import { auth } from "@/auth";
 import { Role } from "@prisma/client";
+import categoryControllers from "./categoryFunctions/controllerExporter";
 import { UserRequestDetails } from "../types";
 
 const systemMessage = `
@@ -42,6 +43,17 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
         take: 10,
     });
 
+    const conversation = previousMessages.map(message => ({
+        role: message.role,
+        content: message.content,
+    }));
+    conversation.push({
+        role: 'user',
+        content: request,
+    });
+    const categoryController = categoryControllers[requestCategory];
+    const openaiResponse = await categoryController(conversation, userRequestDetails);
+
     await prisma.message.create({
         data: {
             role: Role.user,
@@ -66,5 +78,5 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
         },
     });
 
-    return requestCategory;
+    return openaiResponse;
 }
