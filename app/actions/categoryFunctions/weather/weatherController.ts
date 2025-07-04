@@ -1,6 +1,7 @@
-import { Conversation } from "@/app/types";
-import { getCurrentWeatherSignature } from "./getCurrentWeather";
+import { Conversation, Coordinates, OpenAIResponseOutput } from "@/app/types";
+import { getCurrentWeatherSignature, getCurrentWeather } from "./getCurrentWeather";
 import openAIClient from "@/app/lib/openai";
+import { getCoordinates } from "./weatherHelpers";
 
 const functionSignatures = [
     getCurrentWeatherSignature,
@@ -18,4 +19,27 @@ export default async function weatherFunctionController(conversation: Conversati
         tools: functionSignatures
     });
 
+    let output: OpenAIResponseOutput = openaiResponse.output[0];
+    const args = JSON.parse(output.arguments || '{}');
+    const location: string = args?.location;
+    
+    if (!location) {
+        return 'Please provide a location.';
+    }
+    
+    const coordinates: Coordinates = await getCoordinates(location);
+
+    if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+        return 'Sorry, I could not find the location you requested. Please try again with a different location.';
+    }
+
+    const functionName = output.name;
+    
+    switch (functionName) {
+        case 'getCurrentWeather':
+            return await getCurrentWeather(coordinates, conversation);
+
+        default:
+            return ''
+    }
 }

@@ -7,3 +7,12 @@ export type Coordinates = {
     latitude?: number;
     longitude?: number;
 }
+
+export type OpenAIResponseOutput = {
+    id?: string | undefined;
+    type: string;
+    status?: string | undefined;
+    arguments?: string;
+    call_id?: string;
+    name?: string;
+}
