@@ -8,6 +8,10 @@ export type Coordinates = {
     longitude?: number;
 }
 
+export type CategoryControllers = {
+    [key: string]: (conversation: Conversation) => Promise<string>;
+};
+
 export type OpenAIResponseOutput = {
     id?: string | undefined;
     type: string;
