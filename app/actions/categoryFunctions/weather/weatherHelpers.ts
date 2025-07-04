@@ -1,5 +1,6 @@
+import { Coordinates } from "@/app/types";
 
-async function getCoordinates(location:string) {
+async function getCoordinates(location:string): Promise<Coordinates> {
     const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location)}&format=json&limit=1`;
     
     try {

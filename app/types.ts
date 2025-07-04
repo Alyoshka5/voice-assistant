@@ -4,6 +4,6 @@ export type Conversation = {
 }[];
 
 export type Coordinates = {
-    latitude: number;
-    longitude: number;
+    latitude?: number;
+    longitude?: number;
 }
