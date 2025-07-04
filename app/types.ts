@@ -9,7 +9,7 @@ export type Coordinates = {
 }
 
 export type CategoryControllers = {
-    [key: string]: (conversation: Conversation) => Promise<string>;
+    [key: string]: (conversation: Conversation, userRequestDetails: UserRequestDetails) => Promise<string>;
 };
 
 export type OpenAIResponseOutput = {
@@ -19,4 +19,8 @@ export type OpenAIResponseOutput = {
     arguments?: string;
     call_id?: string;
     name?: string;
+}
+
+export type UserRequestDetails = {
+    coordinates: Coordinates | null;
 }

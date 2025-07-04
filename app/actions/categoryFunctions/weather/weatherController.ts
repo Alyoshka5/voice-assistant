@@ -1,4 +1,4 @@
-import { Conversation, Coordinates, OpenAIResponseOutput } from "@/app/types";
+import { Conversation, Coordinates, OpenAIResponseOutput, UserRequestDetails } from "@/app/types";
 import { getCurrentWeatherSignature, getCurrentWeather } from "./getCurrentWeather";
 import openAIClient from "@/app/lib/openai";
 import { getCoordinates } from "./weatherHelpers";
@@ -9,7 +9,7 @@ const functionSignatures = [
 
 const systemMessage = `Use the weather functions and request context to respond helpfully and briefly.`
 
-export default async function weatherFunctionController(conversation: Conversation) {
+export default async function weatherFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
     const openaiResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-nano',
         input: [

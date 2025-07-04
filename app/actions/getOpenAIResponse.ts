@@ -4,6 +4,7 @@ import openAIClient from "@/app/lib/openai";
 import prisma from "@/app/lib/db";
 import { auth } from "@/auth";
 import { Role } from "@prisma/client";
+import { UserRequestDetails } from "../types";
 
 const systemMessage = `
 You are a voice assistant. Classify the user's request into one of these categories:
@@ -16,7 +17,7 @@ Respond with a just the category name, without any additional text or explanatio
 If you're unsure, return "other". Do not extract details or guess.
 `;
 
-export default async function getOpenAIResponse(request: string) {
+export default async function getOpenAIResponse(request: string, userRequestDetails: UserRequestDetails) {
     const session = await auth();
     const userEmail = session?.user?.email;
     if (!userEmail) return '';
