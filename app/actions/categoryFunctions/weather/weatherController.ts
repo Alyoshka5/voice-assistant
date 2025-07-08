@@ -1,11 +1,8 @@
 import { Conversation, Coordinates, OpenAIResponseOutput, UserRequestDetails } from "@/app/types";
-import { getCurrentWeatherSignature, getCurrentWeather } from "./getCurrentWeather";
+import getCurrentWeather from "./getCurrentWeather";
 import openAIClient from "@/app/lib/openai";
 import { getCoordinates } from "./weatherHelpers";
-
-const functionSignatures = [
-    getCurrentWeatherSignature,
-]
+import functionSignatures from './weatherFunctionSignatures'
 
 const systemMessage = `Use the weather functions and request context to respond helpfully and briefly.`
 
