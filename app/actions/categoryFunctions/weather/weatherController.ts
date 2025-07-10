@@ -3,14 +3,15 @@ import getCurrentWeather from "./getCurrentWeather";
 import openAIClient from "@/app/lib/openai";
 import { getCoordinates } from "./weatherHelpers";
 import functionSignatures from './weatherFunctionSignatures'
+import getWeatherForecast from "./getFutureWeatherForecast";
 
-const systemMessage = `Use the weather functions and request context to respond helpfully and briefly.`
+const systemMessage = `Use the weather functions and request context to respond helpfully and briefly. Today is `
 
 export default async function weatherFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
     const openaiResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-nano',
         input: [
-            { role: 'system', content: systemMessage },
+            { role: 'system', content: systemMessage + userRequestDetails.date },
             ...conversation,
         ],
         tools: functionSignatures
@@ -43,6 +44,9 @@ export default async function weatherFunctionController(conversation: Conversati
     switch (functionName) {
         case 'getCurrentWeather':
             return await getCurrentWeather(coordinates, conversation);
+
+        case 'getFutureWeatherForecast':
+            return await getWeatherForecast(coordinates, conversation, args?.date);
 
         default:
             return ''

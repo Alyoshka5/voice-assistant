@@ -23,4 +23,35 @@ export type OpenAIResponseOutput = {
 
 export type UserRequestDetails = {
     coordinates: Coordinates | null;
+    date: string;
+}
+
+export type ForecastDay = {
+    displayDate: {
+      year: number;
+      month: number;
+      day: number;
+    };
+};
+
+export type ForecastDetails = {
+    displayDate: DateObject;
+    weatherCondition: {
+        description: string;
+        type: string;
+    };
+    maxTemperature: {
+        degrees: number;
+        unit: string;
+    };
+    minTemperature: {
+        degrees: number;
+        unit: string;
+    };
+}
+
+export type DateObject = {
+    year: number;
+    month: number;
+    day: number;
 }
