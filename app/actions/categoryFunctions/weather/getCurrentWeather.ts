@@ -11,6 +11,12 @@ export default async function getCurrentWeather(coordinates: Coordinates, conver
   
     const weatheRresponse = await fetch(url);
     const weatherData = await weatheRresponse.json();
+
+    weatherData.temperature.degrees = Math.round(weatherData.temperature.degrees);
+    weatherData.feelsLikeTemperature.degrees = Math.round(weatherData.feelsLikeTemperature.degrees);
+    weatherData.dewPoint.degrees = Math.round(weatherData.dewPoint.degrees);
+    weatherData.heatIndex.degrees = Math.round(weatherData.heatIndex.degrees);
+    weatherData.windChill.degrees = Math.round(weatherData.windChill.degrees);
     
     const openaiResponse = await openAIClient.responses.create({
         model: "gpt-4.1-nano",
