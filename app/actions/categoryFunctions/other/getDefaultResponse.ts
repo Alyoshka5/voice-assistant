@@ -12,5 +12,9 @@ export default async function getDefaultResponse(conversation: Conversation, use
         ],
     });
 
-    return openaiResponse.output_text;
+    return {
+        outputText: openaiResponse.output_text,
+        action: '',
+        details: {}
+    };
 }

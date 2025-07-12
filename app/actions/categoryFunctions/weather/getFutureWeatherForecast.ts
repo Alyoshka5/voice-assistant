@@ -22,7 +22,11 @@ export default async function getWeatherForecast(coordinates: Coordinates, conve
     });
 
     if (!targetDateForecast) {
-        return 'Sorry, I couldn\'t find the weather forecast for the specified day.';
+        return {
+            outputText: `Sorry, I couldn't find the weather forecast for the specified day.`,
+            action: '',
+            details: {}
+        }
     }
 
     const forecastDetails: ForecastDetails = {
@@ -45,5 +49,14 @@ export default async function getWeatherForecast(coordinates: Coordinates, conve
         ],
     });
     
-    return openaiResponse.output_text;
+    return {
+        outputText: openaiResponse.output_text,
+        action: 'displayForecastWeatherTab',
+        details: {
+            weatherIcon: targetDateForecast.daytimeForecast.weatherCondition.iconBaseUri,
+            maxTemperature: forecastDetails.maxTemperature.degrees,
+            minTemperature: forecastDetails.minTemperature.degrees,
+            weatherDescription: forecastDetails.weatherCondition.description,
+        }
+    }
 }

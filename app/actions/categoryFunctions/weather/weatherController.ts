@@ -31,12 +31,21 @@ export default async function weatherFunctionController(conversation: Conversati
         if (userRequestDetails.coordinates) {
             coordinates = userRequestDetails.coordinates;
         } else {
-            return 'Sorry, I could not get the weather information you asked for. Can you please provide a location?';
+            return {
+                outputText: 'Sorry, I could not get the weather information you asked for. Can you please provide a location?',
+                action: '',
+                details: {}
+            }
         }
     }
 
     if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
-        return 'Sorry, I could not find the location you requested. Please try again with a different location.';
+        return {
+            outputText: 'Sorry, I could not find the location you requested. Please try again with a different location.',
+            action: '',
+            details: {}
+        }
+        
     }
 
     const functionName = output.name;
@@ -49,6 +58,10 @@ export default async function weatherFunctionController(conversation: Conversati
             return await getWeatherForecast(coordinates, conversation, args?.date);
 
         default:
-            return ''
+            return {
+                outputText: `Sorry, I don't understand your request. Please try again with a different question.`,
+                action: '',
+                details: {}
+            }
     }
 }

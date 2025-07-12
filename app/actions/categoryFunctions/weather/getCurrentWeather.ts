@@ -26,5 +26,16 @@ export default async function getCurrentWeather(coordinates: Coordinates, conver
         ],
     });
 
-    return openaiResponse.output_text
+    return {
+        outputText: openaiResponse.output_text,
+        action: 'displayCurrentWeatherTab',
+        details: {
+            weatherIcon: weatherData.weatherCondition.iconBaseUri,
+            temperature: weatherData.temperature.degrees,
+            feelsLike: weatherData.feelsLikeTemperature.degrees,
+            precipitation: weatherData.precipitation.probability.percent,
+            humidity: weatherData.relativeHumidity,
+            windSpeed: weatherData.wind.speed.value
+        }
+    };
 }
