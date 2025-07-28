@@ -69,7 +69,7 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
     await prisma.message.create({
         data: {
             role: Role.assistant,
-            content: requestCategory,
+            content: openaiResponse.outputText,
             user: {
                 connect: {
                     email: userEmail
