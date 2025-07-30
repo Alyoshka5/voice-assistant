@@ -12,6 +12,7 @@ You are a voice assistant. Classify the user's request into one of these categor
 
 - weather
 - other
+- youtube
 
 Respond with a just the category name, without any additional text or explanation.
 
