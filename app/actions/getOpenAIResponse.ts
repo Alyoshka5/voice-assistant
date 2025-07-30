@@ -48,6 +48,7 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
         role: message.role,
         content: message.content,
     }));
+    conversation.reverse();
     conversation.push({
         role: 'user',
         content: request,
