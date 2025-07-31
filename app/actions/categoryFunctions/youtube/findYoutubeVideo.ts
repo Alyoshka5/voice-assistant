@@ -2,21 +2,13 @@ import { auth } from '@/auth';
 
 export default async function getYouTubeVideoId(query: string) {
     const session = await auth();
-    if (!session) {
-        return {
-            outputText: 'You need to be signed in to find a video.',
-            action: '',
-            details: {}
-        }
-    } 
+    if (!session) 
+        return {outputText: 'You need to be signed in to find a video.'}
+
     const accessToken = session.accessToken;
-    if (!accessToken) {
-        return {
-            outputText: 'You need to be signed in to find a video.',
-            action: '',
-            details: {}
-        }
-    }
+    if (!accessToken)
+        return {outputText: 'You need to be signed in to find a video.'}
+
     const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=1&videoEmbeddable=true`, {
         headers: {
             Authorization: 'Bearer ' + accessToken,
@@ -24,13 +16,8 @@ export default async function getYouTubeVideoId(query: string) {
         }
     });
 
-    if (!res.ok) {
-        return {
-            outputText: `Sorry, I couldn't find a video.`,
-            action: '',
-            details: {}
-        }
-    }
+    if (!res.ok)
+        return {outputText: `Sorry, I couldn't find a video.`}
 
     const data = await res.json();
     const videoData = data.items?.[0];

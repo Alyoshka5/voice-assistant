@@ -6,34 +6,22 @@ import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from
 
 export default async function addVideoToPlaylist(conversation: Conversation, details: AddVideoToPlaylistDetails) {
     const session = await auth();
-    if (!session) {
-        return {
-            outputText: 'You need to be signed in to add a video to a playlist.',
-            action: '',
-            details: {}
-        }
-    } 
+    if (!session)
+        return {outputText: 'You need to be signed in to add a video to a playlist.'}
+
     const accessToken = session.accessToken;
-    if (!accessToken) {
-        return {
-            outputText: 'You need to be signed in to add a video to a playlist.',
-            action: '',
-            details: {}
-        }
-    }
+    if (!accessToken)
+        return {outputText: 'You need to be signed in to add a video to a playlist.'}
+
 
     const playlistResponse = await fetch('https://www.googleapis.com/youtube/v3/playlists?part=snippet,id&mine=true&maxResults=50', {
         headers: {
             Authorization: 'Bearer ' + accessToken,
         },
     });
-    if (!playlistResponse.ok) {
-        return {
-            outputText: `Sorry, I couldn't add the video to the playlist.`,
-            action: '',
-            details: {}
-        }
-    }
+    if (!playlistResponse.ok)
+        return {outputText: `Sorry, I couldn't add the video to the playlist.`}
+
     const playlistData: YoutubePlaylistsList = await playlistResponse.json();
 
     const playlistNames = playlistData.items.map((playlist: YoutubePlaylist) => {
@@ -41,22 +29,13 @@ export default async function addVideoToPlaylist(conversation: Conversation, det
     });
     
     const requestedPlaylistName = details.playlistName;
-    if (!requestedPlaylistName) {
-        return {
-            outputText: `Sorry I can't add the video because you didn't provide a playlist name.`,
-            action: '',
-            details: {}
-        }
-    }
+    if (!requestedPlaylistName)
+        return {outputText: `Sorry I can't add the video because you didn't provide a playlist name.`}
+
     
     const youtubeLink = details.youtubeLink;
-    if (!youtubeLink) {
-        return {
-            outputText: `Sorry I can't add the video because I couldn't find a video link.`,
-            action: '',
-            details: {}
-        }
-    }
+    if (!youtubeLink)
+        return {outputText: `Sorry I can't add the video because I couldn't find a video link.`}
     
     const playlistIdentifierMessage = createPlaylistIdentifierMessage(playlistNames, requestedPlaylistName);
     let openaiResponse;
@@ -65,45 +44,26 @@ export default async function addVideoToPlaylist(conversation: Conversation, det
             model: "gpt-4.1-nano",
             input: playlistIdentifierMessage
         });
-        if (openaiResponse.error) {
+        if (openaiResponse.error)
             throw new Error(openaiResponse.error.message);
-        }
     } catch (error) {
-        return {
-            outputText: `Sorry, I couldn't add the video to the playlist.`,
-            action: '',
-            details: {}
-        }
+        return {outputText: `Sorry, I couldn't add the video to the playlist.`}
     }
 
     let playlistId = openaiResponse.output_text.trim();
     const openaiDefaultPlaylistIds = ['', '\'\'', '""', '```plaintext\n```']
     if (openaiDefaultPlaylistIds.includes(playlistId)) { // playlist doesn't exist
         playlistId = await createPlaylist(requestedPlaylistName, accessToken);
-        if (playlistId === '') {
-            return {
-                outputText: `Sorry, I couldn't find or create a playlist with the name ${requestedPlaylistName}.`,
-                action: '',
-                details: {}
-            }
-        }
+        if (playlistId === '')
+            return {outputText: `Sorry, I couldn't find or create a playlist with the name ${requestedPlaylistName}.`}
     }
 
     const youtubeVideoId = youtubeLink.split('v=')[1].split('&')[0]
     const videoTitle = await addVideo(accessToken, playlistId, youtubeVideoId);
-    if (videoTitle === '') {
-        return {
-            outputText: `Sorry, I couldn't add the video to the playlist.`,
-            action: '',
-            details: {}
-        }
-    }
+    if (videoTitle === '')
+        return {outputText: `Sorry, I couldn't add the video to the playlist.`}
 
-    return {
-        outputText: `I added ${videoTitle} to your ${details.playlistName} playlist`,
-        action: '',
-        details: {}
-    };
+    return {outputText: `I added ${videoTitle} to your ${details.playlistName} playlist`}
 }
 
 function createPlaylistIdentifierMessage(playlistNames: string[], requestedPlaylistName: string) {
@@ -127,9 +87,8 @@ async function createPlaylist(requestedPlaylistName: string, accessToken: string
         })
     });
     
-    if (!res.ok) {
+    if (!res.ok)
         return '';
-    }
     
     const data = await res.json();
     return data.id;
@@ -153,7 +112,8 @@ async function addVideo(accessToken: string, playlistId: string, videoId: string
         })
     });
 
-    if (!res.ok) return '';
+    if (!res.ok)
+        return '';
 
     const data = await res.json()
 

@@ -21,13 +21,8 @@ export default async function getWeatherForecast(coordinates: Coordinates, conve
         return date.year == targetDate.year && date.month == targetDate.month && date.day == targetDate.day;
     });
 
-    if (!targetDateForecast) {
-        return {
-            outputText: `Sorry, I couldn't find the weather forecast for the specified day.`,
-            action: '',
-            details: {}
-        }
-    }
+    if (!targetDateForecast)
+        return {outputText: `Sorry, I couldn't find the weather forecast for the specified day.`}
 
     const forecastDetails: ForecastDetails = {
         displayDate: targetDateForecast.displayDate,
