@@ -8,8 +8,9 @@ export type Conversation = {
 
 type ServerResponseObject = {
     outputText: string;
-    action: string;
-    details: Record<string, string | number | undefined>;
+    databaseText?: string;
+    action?: string;
+    details?: Record<string, string | number | undefined>;
 }
 
 export type CategoryControllers = {
