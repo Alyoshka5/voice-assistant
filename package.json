@@ -10,7 +10,7 @@
         "vercel-build": "prisma generate && next build"
     },
     "dependencies": {
-        "@prisma/client": "^6.10.1",
+        "@prisma/client": "^6.13.0",
         "next": "15.3.4",
         "next-auth": "^5.0.0-beta.29",
         "openai": "^5.8.2",
@@ -21,7 +21,7 @@
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
-        "prisma": "^6.10.1",
+        "prisma": "^6.13.0",
         "typescript": "^5"
     }
 }
