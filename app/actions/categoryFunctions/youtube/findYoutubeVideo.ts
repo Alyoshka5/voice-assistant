@@ -24,7 +24,8 @@ export default async function getYouTubeVideoId(query: string) {
     const videoId = videoData.id.videoId;
 
     return {
-        outputText: `Here is "${videoData.snippet.title}" by ${videoData.snippet.channelTitle}. - https://www.youtube.com/watch?v=${videoId}`,
+        outputText: `Here is "${videoData.snippet.title}" by ${videoData.snippet.channelTitle}.`,
+        databaseText: `Here is "${videoData.snippet.title}" by ${videoData.snippet.channelTitle}: https://www.youtube.com/watch?v=${videoId}`,
         action: 'displayYoutubeVideo',
         details: videoId
     }
