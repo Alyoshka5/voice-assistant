@@ -54,7 +54,7 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
         content: request,
     });
     const categoryController = categoryControllers[requestCategory];
-    const openaiResponse = await categoryController(conversation, userRequestDetails);
+    const controllerResponse = await categoryController(conversation, userRequestDetails);
 
     await prisma.message.create({
         data: {
@@ -71,7 +71,7 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
     await prisma.message.create({
         data: {
             role: Role.assistant,
-            content: openaiResponse.outputText,
+            content: controllerResponse.outputText,
             user: {
                 connect: {
                     email: userEmail
@@ -80,5 +80,5 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
         },
     });
 
-    return openaiResponse;
+    return controllerResponse;
 }
