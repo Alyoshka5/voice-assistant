@@ -1,6 +1,7 @@
 import { Conversation, OpenAIResponseOutput, UserRequestDetails } from "@/app/types";
 import openAIClient from "@/app/lib/openai";
 import functionSignatures from './youtubeFunctionSignatures'
+import addVideoToPlaylist from "./addVideoToPlaylist";
 
 const systemMessage = `Use the youtube functions and request context to respond helpfully and briefly.`
 
@@ -20,6 +21,8 @@ export default async function youtubeFunctionController(conversation: Conversati
     const functionName = output.name;
     
     switch (functionName) {
+        case 'addVideoToPlaylist':
+            return await addVideoToPlaylist(conversation, args);
 
         default:
             return {
