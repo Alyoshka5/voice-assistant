@@ -1,3 +1,21 @@
+const findYoutubeVideoSignature = {
+    type: "function" as const,
+    name: "findYoutubeVideo",
+    description: "Finds a YouTube video based on the user's request",
+    parameters: {
+        type: "object",
+        properties: {
+            videoQuery: {
+                type: "string",
+                description: "User's video query that will be searched on YouTube"
+            },
+        },
+        required: ["videoQuery"],
+        additionalProperties: false
+    },
+    strict: true,
+}
+
 const addVideoToPlaylistSignature = {
     type: "function" as const,
     name: "addVideoToPlaylist",
@@ -21,6 +39,7 @@ const addVideoToPlaylistSignature = {
 }
 
 const functionSignatures = [
+    findYoutubeVideoSignature,
     addVideoToPlaylistSignature
 ]
 
