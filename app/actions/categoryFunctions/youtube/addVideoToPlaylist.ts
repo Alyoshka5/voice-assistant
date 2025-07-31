@@ -1,8 +1,10 @@
 import { Conversation } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 import { auth } from "@/auth";
+import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from "@/app/types/types";
 
-export default async function addVideoToPlaylist(conversation: Conversation, details: any) {
+
+export default async function addVideoToPlaylist(conversation: Conversation, details: AddVideoToPlaylistDetails) {
     const session = await auth();
     if (!session) {
         return {
@@ -32,9 +34,9 @@ export default async function addVideoToPlaylist(conversation: Conversation, det
             details: {}
         }
     }
-    const playlistData = await playlistResponse.json();
+    const playlistData: YoutubePlaylistsList = await playlistResponse.json();
 
-    const playlistNames = playlistData.items.map((playlist: any) => {
+    const playlistNames = playlistData.items.map((playlist: YoutubePlaylist) => {
         return `Name: ${playlist.snippet.title}, ID: ${playlist.id}`;
     });
     

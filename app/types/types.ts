@@ -1,4 +1,5 @@
 import { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails } from './weatherTypes';
+import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from './youtubeTypes';
 
 export type Conversation = {
     role: 'system' | 'developer' | 'user' | 'assistant';
@@ -31,3 +32,4 @@ export type DateObject = {
 }
 
 export type { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails }
+export type { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList };
