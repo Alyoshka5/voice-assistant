@@ -1,4 +1,4 @@
-import { Conversation, Coordinates, OpenAIResponseOutput, UserRequestDetails } from "@/app/types";
+import { Conversation, Coordinates, OpenAIResponseOutput, UserRequestDetails } from "@/app/types/types";
 import getCurrentWeather from "./getCurrentWeather";
 import openAIClient from "@/app/lib/openai";
 import { getCoordinates } from "./weatherHelpers";

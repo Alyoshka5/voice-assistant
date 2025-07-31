@@ -5,7 +5,7 @@ import prisma from "@/app/lib/db";
 import { auth } from "@/auth";
 import { Role } from "@prisma/client";
 import categoryControllers from "./categoryFunctions/controllerExporter";
-import { UserRequestDetails } from "../types";
+import { UserRequestDetails } from "../types/types";
 
 const systemMessage = `
 You are a voice assistant. Classify the user's request into one of these categories:

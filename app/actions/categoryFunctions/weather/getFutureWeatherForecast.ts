@@ -1,6 +1,6 @@
 'use server'
 
-import { Conversation, Coordinates, ForecastDay, ForecastDetails, DateObject} from "@/app/types";
+import { Conversation, Coordinates, ForecastDay, ForecastDetails, DateObject} from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 
 

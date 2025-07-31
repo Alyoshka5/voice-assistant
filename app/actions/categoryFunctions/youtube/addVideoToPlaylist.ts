@@ -1,4 +1,4 @@
-import { Conversation } from "@/app/types";
+import { Conversation } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 import { auth } from "@/auth";
 

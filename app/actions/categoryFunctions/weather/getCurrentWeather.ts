@@ -1,4 +1,4 @@
-import { Conversation, Coordinates } from "@/app/types";
+import { Conversation, Coordinates } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 
 const systemMessage = `

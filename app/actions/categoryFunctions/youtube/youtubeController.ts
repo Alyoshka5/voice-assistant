@@ -1,4 +1,4 @@
-import { Conversation, OpenAIResponseOutput, UserRequestDetails } from "@/app/types";
+import { Conversation, OpenAIResponseOutput, UserRequestDetails } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 import functionSignatures from './youtubeFunctionSignatures'
 import addVideoToPlaylist from "./addVideoToPlaylist";

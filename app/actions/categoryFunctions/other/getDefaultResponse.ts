@@ -1,4 +1,4 @@
-import { Conversation, UserRequestDetails } from "@/app/types";
+import { Conversation, UserRequestDetails } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 
 export default async function getDefaultResponse(conversation: Conversation, userRequestDetails: UserRequestDetails) {
