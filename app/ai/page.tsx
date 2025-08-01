@@ -12,6 +12,7 @@ export default function Assistant() {
     const [assistantResponseText, setAssistantResponseText] = useState<string>('');
     const [currentCoords, setCurrentCoords] = useState<{ latitude: number, longitude: number } | null>(null);
     const [userQuery, setUserQuery] = useState<string>('');
+    const [userIsSpeaking, setUserIsSpeaking] = useState<boolean>(false);
 
     const { getResponse } = useOpenAI();
 
@@ -61,16 +62,17 @@ export default function Assistant() {
         let keyIndex = text.toLowerCase().indexOf(assistantName);
         
         if (keyIndex >= 0) {
+            setUserIsSpeaking(true);
             setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
         }
-        // console.log('f')
-        // console.log(isFinal)
     }, [text]);
 
     useEffect(() => {
         if (!isFinal || userQuery.trim() === '') return;
-
-        getAssistantResponse(userQuery);
+        if (userIsSpeaking) {
+            setUserIsSpeaking(false);
+            getAssistantResponse(userQuery);
+        }
     }, [isFinal]);
 
     return (
