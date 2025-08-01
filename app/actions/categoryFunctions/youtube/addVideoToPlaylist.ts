@@ -63,7 +63,7 @@ export default async function addVideoToPlaylist(conversation: Conversation, det
     if (videoTitle === '')
         return {outputText: `Sorry, I couldn't add the video to the playlist.`}
 
-    return {outputText: `I added ${videoTitle} to your ${details.playlistName} playlist`}
+    return {outputText: `I added "${videoTitle}" to your ${details.playlistName} playlist`}
 }
 
 function createPlaylistIdentifierMessage(playlistNames: string[], requestedPlaylistName: string) {
