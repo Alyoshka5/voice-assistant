@@ -3,10 +3,15 @@
 import signOut from "@/app/actions/signout";
 import useOpenAI from "@/app/hooks/useOpenAI";
 import { useEffect, useState } from "react";
+import useSpeechRecognition from "@/app/hooks/useSpeechRecognition";
+
+const assistantName = 'apex';
 
 export default function Assistant() {
+    const {text, isFinal, startListening, stopListening} = useSpeechRecognition();
     const [assistantResponseText, setAssistantResponseText] = useState<string>('');
     const [currentCoords, setCurrentCoords] = useState<{ latitude: number, longitude: number } | null>(null);
+    const [userQuery, setUserQuery] = useState<string>('');
 
     const { getResponse } = useOpenAI();
 
@@ -30,7 +35,7 @@ export default function Assistant() {
 
         if (output !== null && output !== '') {
             setAssistantResponseText(output.outputText);
-        
+
         }
     }
 
@@ -41,10 +46,25 @@ export default function Assistant() {
                 longitude: position.coords.longitude
             });
         });
+
+        try {
+            startListening();
+        } catch (error) {
+            alert("Error starting speech recognition:" + error);
+        }
     }, []);
+
+    useEffect(() => {
+        let keyIndex = text.toLowerCase().indexOf(assistantName);
+        
+        if (keyIndex >= 0) {
+            setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
+        }
+    }, [text]);
 
     return (
         <div>
+            <p>{userQuery}</p>
             <form action={getAssistantResponse}>
                 <input
                     type="text"
