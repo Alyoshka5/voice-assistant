@@ -13,6 +13,7 @@ export default function Assistant() {
     const [currentCoords, setCurrentCoords] = useState<{ latitude: number, longitude: number } | null>(null);
     const [userQuery, setUserQuery] = useState<string>('');
     const [userIsSpeaking, setUserIsSpeaking] = useState<boolean>(false);
+    const [formInputValue, setFormInputValue] = useState<string>('');
 
     const { getResponse } = useOpenAI();
 
@@ -36,11 +37,10 @@ export default function Assistant() {
         }
     }
 
-    const handleQueryFormSubmit = async (formData: FormData) => {
-        const query: string = formData.get('textQuery') as string;
-        if (!query || query.trim() === '')
+    const handleQueryFormSubmit = async () => {
+        if (!formInputValue || formInputValue.trim() === '')
             return;
-        getAssistantResponse(query);
+        getAssistantResponse(formInputValue);
     }
 
     useEffect(() => {
@@ -83,6 +83,8 @@ export default function Assistant() {
                     type="text"
                     name="textQuery"
                     placeholder="Type to Apex..."
+                    value={formInputValue}
+                    onChange={(e) => setFormInputValue(e.target.value)}
                 />
                 <button type="submit">Send</button>
             </form>
