@@ -15,7 +15,7 @@ export default function Assistant() {
 
     const { getResponse } = useOpenAI();
 
-    const getAssistantResponse = async (formData: FormData) => {
+    const getAssistantResponse = async (query: string) => {
         const date = new Date();
         const localDate = date.toLocaleDateString('en-US', {
             weekday: 'long',
@@ -23,10 +23,6 @@ export default function Assistant() {
             month: 'long',
             day: 'numeric',
         });
-
-        const query: string = formData.get('textQuery') as string;
-        if (!query || query.trim() === '')
-            return;
 
         const output = await getResponse(query, {
             coordinates: currentCoords, 
@@ -37,6 +33,13 @@ export default function Assistant() {
             setAssistantResponseText(output.outputText);
 
         }
+    }
+
+    const handleQueryFormSubmit = async (formData: FormData) => {
+        const query: string = formData.get('textQuery') as string;
+        if (!query || query.trim() === '')
+            return;
+        getAssistantResponse(query);
     }
 
     useEffect(() => {
@@ -60,12 +63,20 @@ export default function Assistant() {
         if (keyIndex >= 0) {
             setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
         }
+        // console.log('f')
+        // console.log(isFinal)
     }, [text]);
+
+    useEffect(() => {
+        if (!isFinal || userQuery.trim() === '') return;
+
+        getAssistantResponse(userQuery);
+    }, [isFinal]);
 
     return (
         <div>
             <p>{userQuery}</p>
-            <form action={getAssistantResponse}>
+            <form action={handleQueryFormSubmit}>
                 <input
                     type="text"
                     name="textQuery"
