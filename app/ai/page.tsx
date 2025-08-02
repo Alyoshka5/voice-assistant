@@ -15,6 +15,7 @@ export default function Assistant() {
     const [userIsSpeaking, setUserIsSpeaking] = useState<boolean>(false);
     const [formInputValue, setFormInputValue] = useState<string>('');
     const ignoreSpeechRef = useRef<boolean>(false);
+    const [wakeWordCalled, setWakeWordCalled] = useState<boolean>(false);
 
     const { getResponse } = useOpenAI();
 
@@ -72,14 +73,25 @@ export default function Assistant() {
     useEffect(() => {
         let keyIndex = text.toLowerCase().indexOf(assistantName);
         
-        if (keyIndex >= 0 && !ignoreSpeechRef.current) {
+        if (!ignoreSpeechRef.current) {
             setUserIsSpeaking(true);
-            setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
+            
+            if (keyIndex >= 0) 
+                setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
+            else if (wakeWordCalled)
+                setUserQuery(text);
+
         }
     }, [text]);
 
     useEffect(() => {
-        if (!isFinal || userQuery.trim() === '') return;
+        if (!isFinal) return;
+        if (userQuery.trim() === '') // assistant called without query
+            setWakeWordCalled(true); // listen to query in the next line
+
+        if (wakeWordCalled)
+            setWakeWordCalled(false);
+
         if (userIsSpeaking && !ignoreSpeechRef.current) {
             setUserIsSpeaking(false);
             getAssistantResponse(userQuery);
