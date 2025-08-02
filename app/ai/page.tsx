@@ -2,7 +2,7 @@
 
 import signOut from "@/app/actions/signout";
 import useOpenAI from "@/app/hooks/useOpenAI";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useSpeechRecognition from "@/app/hooks/useSpeechRecognition";
 
 const assistantName = 'apex';
@@ -14,6 +14,7 @@ export default function Assistant() {
     const [userQuery, setUserQuery] = useState<string>('');
     const [userIsSpeaking, setUserIsSpeaking] = useState<boolean>(false);
     const [formInputValue, setFormInputValue] = useState<string>('');
+    const ignoreSpeechRef = useRef<boolean>(false);
 
     const { getResponse } = useOpenAI();
 
@@ -37,10 +38,20 @@ export default function Assistant() {
         }
     }
 
-    const handleQueryFormSubmit = async () => {
+    const handleQueryFormSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
         if (!formInputValue || formInputValue.trim() === '')
             return;
-        getAssistantResponse(formInputValue);
+
+        setFormInputValue('');
+        ignoreSpeechRef.current = true; // ignore any speech input while form is submitted
+        setUserIsSpeaking(false);
+        stopListening(); // will automatically start listening after
+        setUserQuery(formInputValue);
+        await getAssistantResponse(formInputValue);
+        setTimeout(() => {
+            ignoreSpeechRef.current = false;
+        }, 300);
     }
 
     useEffect(() => {
@@ -61,7 +72,7 @@ export default function Assistant() {
     useEffect(() => {
         let keyIndex = text.toLowerCase().indexOf(assistantName);
         
-        if (keyIndex >= 0) {
+        if (keyIndex >= 0 && !ignoreSpeechRef.current) {
             setUserIsSpeaking(true);
             setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
         }
@@ -69,7 +80,7 @@ export default function Assistant() {
 
     useEffect(() => {
         if (!isFinal || userQuery.trim() === '') return;
-        if (userIsSpeaking) {
+        if (userIsSpeaking && !ignoreSpeechRef.current) {
             setUserIsSpeaking(false);
             getAssistantResponse(userQuery);
         }
@@ -78,7 +89,7 @@ export default function Assistant() {
     return (
         <div>
             <p>{userQuery}</p>
-            <form action={handleQueryFormSubmit}>
+            <form onSubmit={handleQueryFormSubmit}>
                 <input
                     type="text"
                     name="textQuery"
