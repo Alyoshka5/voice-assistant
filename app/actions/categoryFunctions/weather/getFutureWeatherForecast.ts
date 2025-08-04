@@ -52,6 +52,7 @@ export default async function getWeatherForecast(coordinates: Coordinates, conve
             maxTemperature: forecastDetails.maxTemperature.degrees,
             minTemperature: forecastDetails.minTemperature.degrees,
             weatherDescription: forecastDetails.weatherCondition.description,
+            displayDate: `${forecastDetails.displayDate.month}/${forecastDetails.displayDate.day}/${forecastDetails.displayDate.year}`
         }
     }
 }
