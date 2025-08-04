@@ -16,6 +16,7 @@ export default function Assistant() {
     const [formInputValue, setFormInputValue] = useState<string>('');
     const ignoreSpeechRef = useRef<boolean>(false);
     const [wakeWordCalled, setWakeWordCalled] = useState<boolean>(false);
+    const [displayText, setDisplayText] = useState<string>('');
 
     const { getResponse } = useOpenAI();
 
@@ -35,6 +36,7 @@ export default function Assistant() {
 
         if (output !== null && output !== '') {
             setAssistantResponseText(output.outputText);
+            setUserQuery('');
 
         }
     }
@@ -102,9 +104,16 @@ export default function Assistant() {
         }
     }, [isFinal]);
 
+    useEffect(() => {
+        if (userQuery.trim() === '')
+            return;
+
+        setDisplayText(userQuery);
+    }, [userQuery]);
+
     return (
         <div>
-            <p>{userQuery}</p>
+            <p>{displayText}</p>
             <form onSubmit={handleQueryFormSubmit}>
                 <input
                     type="text"
