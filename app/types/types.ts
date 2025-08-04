@@ -1,10 +1,15 @@
-import { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails } from './weatherTypes';
+import { Coordinates, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails } from './weatherTypes';
 import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from './youtubeTypes';
 
 export type Conversation = {
     role: 'system' | 'developer' | 'user' | 'assistant';
     content: string;
 }[];
+
+export type UserRequestDetails = {
+    coordinates: Coordinates | null;
+    date: string;
+}
 
 type ServerResponseObject = {
     outputText: string;
@@ -32,5 +37,5 @@ export type DateObject = {
     day: number;
 }
 
-export type { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails }
+export type { Coordinates, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails }
 export type { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList };

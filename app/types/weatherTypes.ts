@@ -5,11 +5,6 @@ export type Coordinates = {
     longitude?: number;
 }
 
-export type UserRequestDetails = {
-    coordinates: Coordinates | null;
-    date: string;
-}
-
 export type ForecastDay = {
     displayDate: {
       year: number;
