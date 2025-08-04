@@ -2,7 +2,7 @@
 
 import signOut from "@/app/actions/signout";
 import useOpenAI from "@/app/hooks/useOpenAI";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, ReactElement } from "react";
 import useSpeechRecognition from "@/app/hooks/useSpeechRecognition";
 import usePlaySpeech from "../hooks/usePlaySpeech";
 
@@ -19,6 +19,7 @@ export default function Assistant() {
     const [wakeWordCalled, setWakeWordCalled] = useState<boolean>(false);
     const [displayText, setDisplayText] = useState<string>('');
     const [assistantActivated, setAssistantActivated] = useState<boolean>(false);
+    const [displayPanel, setDisplayPanel] = useState<ReactElement>(<></>);
 
     const { getResponse } = useOpenAI();
     const { playSpeech } = usePlaySpeech();
@@ -41,10 +42,18 @@ export default function Assistant() {
             const outputText = output.outputText.trim().replaceAll('&quot;', '"');
             setAssistantResponseText(outputText);
             setUserQuery('');
+            handleResponseActions(output.action || '', output.details || {});
             playSpeech(outputText);
         }
     }
 
+    const handleResponseActions = (action: string, details: Record<string, string | number | undefined>) => {
+        switch (action) {
+            default:
+                setDisplayPanel(<></>);
+        }
+    }
+    
     const handleQueryFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if (!formInputValue || formInputValue.trim() === '')
@@ -134,6 +143,7 @@ export default function Assistant() {
                         <button type="submit">Send</button>
                     </form>
                     <p>{assistantResponseText}</p>
+                    {displayPanel}
                 </>
             :
                 <button onClick={() => setAssistantActivated(true)}>
