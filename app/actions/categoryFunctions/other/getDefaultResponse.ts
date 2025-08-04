@@ -6,6 +6,7 @@ export default async function getDefaultResponse(conversation: Conversation, use
 
     const openaiResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-mini',
+        max_output_tokens: 400,
         input: [
             {role: 'system', content: systemMessage},
             ...conversation,
@@ -21,7 +22,7 @@ export default async function getDefaultResponse(conversation: Conversation, use
 
 function createSystemMessage(time: string, date: string) {
     return (
-`You are a friendly voice assistant. Read the conversation and user request, and respond naturally, clearly, and briefly.
+`You are a friendly voice assistant. Read the conversation and user request, and respond naturally, clearly, and briefly. Do not exceed 150 words under any circumstance.
 Current time: ${time}
 Current date: ${date}`
 )
