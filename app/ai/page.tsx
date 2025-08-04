@@ -4,6 +4,7 @@ import signOut from "@/app/actions/signout";
 import useOpenAI from "@/app/hooks/useOpenAI";
 import { useEffect, useState, useRef } from "react";
 import useSpeechRecognition from "@/app/hooks/useSpeechRecognition";
+import usePlaySpeech from "../hooks/usePlaySpeech";
 
 const assistantName = 'apex';
 
@@ -19,6 +20,7 @@ export default function Assistant() {
     const [displayText, setDisplayText] = useState<string>('');
 
     const { getResponse } = useOpenAI();
+    const { playSpeech } = usePlaySpeech();
 
     const getAssistantResponse = async (query: string) => {
         const date = new Date();
@@ -37,7 +39,7 @@ export default function Assistant() {
         if (output !== null && output !== '') {
             setAssistantResponseText(output.outputText);
             setUserQuery('');
-
+            playSpeech(output.outputText);
         }
     }
 
