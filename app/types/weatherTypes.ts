@@ -33,3 +33,12 @@ export type ForecastDetails = {
         unit: string;
     };
 }
+
+export type CurrentWeatherDetails = {
+    weatherIcon: string,
+    temperature: number,
+    feelsLike: number,
+    precipitation: number,
+    humidity: number,
+    windSpeed: number
+}

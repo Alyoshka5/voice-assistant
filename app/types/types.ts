@@ -1,4 +1,4 @@
-import { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails } from './weatherTypes';
+import { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails, CurrentWeatherDetails } from './weatherTypes';
 import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from './youtubeTypes';
 
 export type Conversation = {
@@ -32,5 +32,5 @@ export type DateObject = {
     day: number;
 }
 
-export type { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails }
+export type { Coordinates, UserRequestDetails, ForecastDay, ForecastDetails, CurrentWeatherDetails }
 export type { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList };

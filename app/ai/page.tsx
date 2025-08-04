@@ -6,6 +6,8 @@ import { useEffect, useState, useRef, ReactElement } from "react";
 import useSpeechRecognition from "@/app/hooks/useSpeechRecognition";
 import usePlaySpeech from "../hooks/usePlaySpeech";
 import YoutubePlayer from "@/app/components/panels/YoutubePlayer";
+import CurrentWeatherPanel from "@/app/components/panels/currentWeatherPanel";
+import { CurrentWeatherDetails } from "../types/types";
 
 const assistantName = 'apex';
 
@@ -50,6 +52,11 @@ export default function Assistant() {
 
     const handleResponseActions = (action: string, details: Record<string, string | number | undefined>) => {
         switch (action) {
+            case 'displayCurrentWeatherTab':
+                console.log('heree')
+                setDisplayPanel(<CurrentWeatherPanel details={details as CurrentWeatherDetails} />)
+                break;
+
             case 'displayYoutubeVideo':
                 if (details.videoId) {
                     setDisplayPanel(<YoutubePlayer videoId={details.videoId as string} />);
