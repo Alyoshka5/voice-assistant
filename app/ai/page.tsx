@@ -89,7 +89,6 @@ export default function Assistant() {
                 setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
             else if (wakeWordCalled)
                 setUserQuery(text);
-
         }
     }, [text]);
 
@@ -139,7 +138,6 @@ export default function Assistant() {
                 <button onClick={() => setAssistantActivated(true)}>
                     Activate Apex
                 </button>
-
             }
 
             <form action={signOut}>
