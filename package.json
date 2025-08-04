@@ -10,6 +10,7 @@
         "vercel-build": "prisma generate && next build"
     },
     "dependencies": {
+        "@google-cloud/text-to-speech": "^6.2.0",
         "@prisma/client": "^6.13.0",
         "@types/dom-speech-recognition": "^0.0.6",
         "next": "15.3.4",
