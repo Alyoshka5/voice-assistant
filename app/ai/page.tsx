@@ -80,7 +80,7 @@ export default function Assistant() {
     }, [assistantActivated]);
 
     useEffect(() => {
-        let keyIndex = text.toLowerCase().indexOf(assistantName);
+        const keyIndex = text.toLowerCase().indexOf(assistantName);
         
         if (!ignoreSpeechRef.current) {
             setUserIsSpeaking(true);
