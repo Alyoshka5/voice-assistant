@@ -86,8 +86,12 @@ export default function Assistant() {
 
     useEffect(() => {
         if (!isFinal) return;
-        if (userQuery.trim() === '') // assistant called without query
-            setWakeWordCalled(true); // listen to query in the next line
+        if (userQuery.trim() === '') { // assistant called without query
+            const keyIndex = text.toLowerCase().indexOf(assistantName);
+            if (keyIndex >= 0) // no wake word detected
+                setWakeWordCalled(true); // listen to query in the next line
+            return;
+        }
 
         if (wakeWordCalled)
             setWakeWordCalled(false);
