@@ -42,3 +42,11 @@ export type CurrentWeatherDetails = {
     humidity: number,
     windSpeed: number
 }
+
+export type FutureWeatherForecastDetails = {
+    weatherIcon: string,
+    maxTemperature: number,
+    minTemperature: number,
+    weatherDescription: string,
+    displayDate: string
+}

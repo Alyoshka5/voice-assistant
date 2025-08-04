@@ -7,7 +7,8 @@ import useSpeechRecognition from "@/app/hooks/useSpeechRecognition";
 import usePlaySpeech from "../hooks/usePlaySpeech";
 import YoutubePlayer from "@/app/components/panels/YoutubePlayer";
 import CurrentWeatherPanel from "@/app/components/panels/currentWeatherPanel";
-import { CurrentWeatherDetails } from "../types/types";
+import FutureWeatherForecastPanel from "../components/panels/FutureWeatherForecastPanel";
+import { CurrentWeatherDetails, FutureWeatherForecastDetails } from "../types/types";
 
 const assistantName = 'apex';
 
@@ -53,8 +54,11 @@ export default function Assistant() {
     const handleResponseActions = (action: string, details: Record<string, string | number | undefined>) => {
         switch (action) {
             case 'displayCurrentWeatherTab':
-                console.log('heree')
                 setDisplayPanel(<CurrentWeatherPanel details={details as CurrentWeatherDetails} />)
+                break;
+
+            case 'displayForecastWeatherTab':
+                setDisplayPanel(<FutureWeatherForecastPanel details={details as FutureWeatherForecastDetails} />)
                 break;
 
             case 'displayYoutubeVideo':
