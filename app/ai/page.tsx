@@ -38,9 +38,10 @@ export default function Assistant() {
         });
 
         if (output !== null && output !== '') {
-            setAssistantResponseText(output.outputText);
+            const outputText = output.outputText.trim().replaceAll('&quot;', '"');
+            setAssistantResponseText(outputText);
             setUserQuery('');
-            playSpeech(output.outputText);
+            playSpeech(outputText);
         }
     }
 
