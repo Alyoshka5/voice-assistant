@@ -18,6 +18,7 @@ export default function Assistant() {
     const ignoreSpeechRef = useRef<boolean>(false);
     const [wakeWordCalled, setWakeWordCalled] = useState<boolean>(false);
     const [displayText, setDisplayText] = useState<string>('');
+    const [assistantActivated, setAssistantActivated] = useState<boolean>(false);
 
     const { getResponse } = useOpenAI();
     const { playSpeech } = usePlaySpeech();
@@ -66,13 +67,17 @@ export default function Assistant() {
                 longitude: position.coords.longitude
             });
         });
-
-        try {
-            startListening();
-        } catch (error) {
-            alert("Error starting speech recognition:" + error);
-        }
     }, []);
+
+    useEffect(() => {
+        if (assistantActivated) {
+            try {
+                startListening();
+            } catch (error) {
+                alert("Error starting speech recognition:" + error);
+            }
+        }
+    }, [assistantActivated]);
 
     useEffect(() => {
         let keyIndex = text.toLowerCase().indexOf(assistantName);
@@ -115,18 +120,27 @@ export default function Assistant() {
 
     return (
         <div>
-            <p>{displayText}</p>
-            <form onSubmit={handleQueryFormSubmit}>
-                <input
-                    type="text"
-                    name="textQuery"
-                    placeholder="Type to Apex..."
-                    value={formInputValue}
-                    onChange={(e) => setFormInputValue(e.target.value)}
-                />
-                <button type="submit">Send</button>
-            </form>
-            <p>{assistantResponseText}</p>
+            {assistantActivated ?
+                <>
+                    <p>{displayText}</p>
+                    <form onSubmit={handleQueryFormSubmit}>
+                        <input
+                            type="text"
+                            name="textQuery"
+                            placeholder="Type to Apex..."
+                            value={formInputValue}
+                            onChange={(e) => setFormInputValue(e.target.value)}
+                        />
+                        <button type="submit">Send</button>
+                    </form>
+                    <p>{assistantResponseText}</p>
+                </>
+            :
+                <button onClick={() => setAssistantActivated(true)}>
+                    Activate Apex
+                </button>
+
+            }
 
             <form action={signOut}>
                 <button type="submit">Sign Out</button>
