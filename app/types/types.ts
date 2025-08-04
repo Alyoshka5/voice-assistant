@@ -9,6 +9,7 @@ export type Conversation = {
 export type UserRequestDetails = {
     coordinates: Coordinates | null;
     date: string;
+    time: string;
 }
 
 type ServerResponseObject = {

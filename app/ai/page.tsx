@@ -36,10 +36,12 @@ export default function Assistant() {
             month: 'long',
             day: 'numeric',
         });
+        const localTime = date.toLocaleTimeString('en-US');
 
         const output = await getResponse(query, {
             coordinates: currentCoords, 
-            date: localDate
+            date: localDate,
+            time: localTime
         });
 
         if (output !== null && output !== '') {
