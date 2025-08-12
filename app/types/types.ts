@@ -1,6 +1,13 @@
 import { Coordinates, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails } from './weatherTypes';
 import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from './youtubeTypes';
 
+export type AuthToken = {
+    accessToken: string;
+    refreshToken: string;
+    accessTokenExpires: number;
+    error?: string;
+}
+
 export type Conversation = {
     role: 'system' | 'developer' | 'user' | 'assistant';
     content: string;

@@ -18,6 +18,8 @@ model User {
   email     String   @unique
   name      String?
   messages  Message[]
+  googleRefreshToken String?
+  googleRefreshTokenIv String?
   createdAt DateTime @default(now())
 }
 
