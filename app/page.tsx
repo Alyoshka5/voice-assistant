@@ -1,5 +1,5 @@
 import primaryFont from "./fonts";
-import googleSignIn from "@/app/lib/google-signin";
+import googleSignIn from "@/app/actions/google-signin";
 
 export default function Home() {
     return (

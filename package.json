@@ -7,20 +7,24 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "vercel-build": "prisma generate && prisma migrate deploy && next build"
+        "vercel-build": "prisma generate && next build"
     },
     "dependencies": {
-        "@prisma/client": "^6.10.1",
+        "@google-cloud/text-to-speech": "^6.2.0",
+        "@prisma/client": "^6.13.0",
+        "@types/dom-speech-recognition": "^0.0.6",
         "next": "15.3.4",
         "next-auth": "^5.0.0-beta.29",
+        "openai": "^5.8.2",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0"
+        "react-dom": "^19.0.0",
+        "react-player": "^3.3.1"
     },
     "devDependencies": {
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
-        "prisma": "^6.10.1",
+        "prisma": "^6.13.0",
         "typescript": "^5"
     }
 }

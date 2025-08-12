@@ -1,0 +1,67 @@
+import { Conversation, Coordinates, OpenAIResponseOutput, UserRequestDetails } from "@/app/types/types";
+import getCurrentWeather from "./getCurrentWeather";
+import openAIClient from "@/app/lib/openai";
+import { getCoordinates } from "./weatherHelpers";
+import functionSignatures from './weatherFunctionSignatures'
+import getWeatherForecast from "./getFutureWeatherForecast";
+
+const systemMessage = `Use the weather functions and request context to respond helpfully and briefly. Today is `
+
+export default async function weatherFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
+    const openaiResponse = await openAIClient.responses.create({
+        model: 'gpt-4.1-nano',
+        input: [
+            { role: 'system', content: systemMessage + userRequestDetails.date },
+            ...conversation,
+        ],
+        tools: functionSignatures
+    });
+
+    let output: OpenAIResponseOutput = openaiResponse.output[0];
+    const args = JSON.parse(output.arguments || '{}');
+    const location: string = args?.location;
+
+    let coordinates: Coordinates;
+
+    const openaiDefaultLocations = ['your location', 'current location', 'my location', 'user location']; //common default values returned by openai model
+    
+    if (location && !openaiDefaultLocations.includes(location.toLowerCase())) {
+        coordinates = await getCoordinates(location);
+    } else {
+        if (userRequestDetails.coordinates) {
+            coordinates = userRequestDetails.coordinates;
+        } else {
+            return {
+                outputText: 'Sorry, I could not get the weather information you asked for. Can you please provide a location?',
+                action: '',
+                details: {}
+            }
+        }
+    }
+
+    if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+        return {
+            outputText: 'Sorry, I could not find the location you requested. Please try again with a different location.',
+            action: '',
+            details: {}
+        }
+        
+    }
+
+    const functionName = output.name;
+    
+    switch (functionName) {
+        case 'getCurrentWeather':
+            return await getCurrentWeather(coordinates, conversation);
+
+        case 'getFutureWeatherForecast':
+            return await getWeatherForecast(coordinates, conversation, args?.date);
+
+        default:
+            return {
+                outputText: `Sorry, I don't understand your request. Please try again with a different question.`,
+                action: '',
+                details: {}
+            }
+    }
+}

@@ -18,5 +18,22 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
+  messages  Message[]
+  googleRefreshToken String?
+  googleRefreshTokenIv String?
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  user
+  assistant
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  role      Role
+  content   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
