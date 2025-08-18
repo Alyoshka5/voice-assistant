@@ -7,12 +7,16 @@ export default function usePlaySpeech() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const urlRef = useRef<string | null>(null);
 
+    const initAudio = useCallback(() => {
+        if (!audioRef.current) {
+            audioRef.current = new Audio();
+            audioRef.current.autoplay = false;
+        }
+    }, []);
+
     const playSpeech = useCallback(async (text: string) => {
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-            audioRef.current.src = '';
-            audioRef.current = null;
+        if (!audioRef.current) {
+            return;
         }
         if (urlRef.current) {
             URL.revokeObjectURL(urlRef.current);
@@ -32,28 +36,17 @@ export default function usePlaySpeech() {
         const url = URL.createObjectURL(blob);
         urlRef.current = url;
 
-        const audio = new Audio(url);
-        audioRef.current = audio;
-
-        audio.addEventListener('ended', () => {
-            if (audioRef.current === audio) {
-                audioRef.current = null;
-            }
-            if (urlRef.current) {
-                URL.revokeObjectURL(urlRef.current);
-                urlRef.current = null;
-            }
-        });
+        audioRef.current.src = url;
 
         try {
-            audio.play();
+            audioRef.current.play();
         } catch (error) {
             console.error('Error playing audio:', error);
         }
-
     }, []);
 
     return {
+        initAudio,
         playSpeech
     };
 }
