@@ -9,6 +9,7 @@ import YoutubePlayer from "@/app/components/panels/YoutubePlayer";
 import CurrentWeatherPanel from "@/app/components/panels/currentWeatherPanel";
 import FutureWeatherForecastPanel from "../components/panels/FutureWeatherForecastPanel";
 import { CurrentWeatherDetails, FutureWeatherForecastDetails } from "../types/types";
+import ParticleOrb from "@/app/components/ParticleOrb";
 
 const assistantName = 'apex';
 
@@ -174,6 +175,8 @@ export default function Assistant() {
                     Activate Apex
                 </button>
             }
+
+            <ParticleOrb />
 
             <form action={signOut}>
                 <button type="submit">Sign Out</button>
