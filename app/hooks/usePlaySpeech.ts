@@ -24,11 +24,6 @@ export default function usePlaySpeech() {
 
             analyserRef.current = analyser;
             dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
-            if (!analyserRef.current || !dataArrayRef.current) {
-                console.log('bad')
-            } else {
-                console.log('good')
-            }
         }
     }, []);
 
@@ -65,7 +60,6 @@ export default function usePlaySpeech() {
 
     const getAmplitude = useCallback(() => {
         if (!analyserRef.current || !dataArrayRef.current) {
-            console.log('problem')    
             return 0;
         }
         
@@ -75,7 +69,6 @@ export default function usePlaySpeech() {
         for (let i = 0; i < dataArrayRef.current.length; i++) {
             sum += dataArrayRef.current[i];
         }
-        console.log(sum / dataArrayRef.current.length);
 
         return sum / dataArrayRef.current.length;
     }, []);
