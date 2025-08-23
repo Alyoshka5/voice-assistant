@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export default function ParticleOrb() {
+export default function ParticleOrb({ getAmplitude }: { getAmplitude: () => number }) {
     const mountRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -73,6 +73,9 @@ export default function ParticleOrb() {
 
             const positionAttr = particleGeometry.getAttribute("position") as THREE.BufferAttribute;
 
+            const amplitude = getAmplitude();
+            const scale = 1 + (amplitude / 255) * 0.8;
+
             for (let i = 0; i < particleCount; i++) {
                 const ix = i * 3;
                 const ox = basePositions[ix];
@@ -85,7 +88,7 @@ export default function ParticleOrb() {
                     Math.sin(time * 0.4 + i * 0.7) * 3;
 
                 const dir = new THREE.Vector3(ox, oy, oz).normalize();
-                dir.multiplyScalar(maxRadius + offset);
+                dir.multiplyScalar((maxRadius + offset) * scale);
 
                 positionAttr.array[ix] = dir.x;
                 positionAttr.array[ix + 1] = dir.y;

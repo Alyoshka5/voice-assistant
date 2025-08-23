@@ -27,7 +27,7 @@ export default function Assistant() {
     const [displayPanel, setDisplayPanel] = useState<ReactElement>(<></>);
 
     const { getResponse } = useOpenAI();
-    const { initAudio, playSpeech } = usePlaySpeech();
+    const { initAudio, playSpeech, getAmplitude } = usePlaySpeech();
 
     const getAssistantResponse = async (query: string) => {
         const date = new Date();
@@ -176,7 +176,7 @@ export default function Assistant() {
                 </button>
             }
 
-            <ParticleOrb />
+            <ParticleOrb getAmplitude={getAmplitude} />
 
             <form action={signOut}>
                 <button type="submit">Sign Out</button>

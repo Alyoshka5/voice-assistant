@@ -6,11 +6,29 @@ import { useCallback, useRef } from "react";
 export default function usePlaySpeech() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const urlRef = useRef<string | null>(null);
+    const analyserRef = useRef<AnalyserNode | null>(null);
+    const dataArrayRef = useRef<Uint8Array | null>(null);
 
     const initAudio = useCallback(() => {
         if (!audioRef.current) {
             audioRef.current = new Audio();
             audioRef.current.autoplay = false;
+
+            const audioContext = new AudioContext();
+            const source = audioContext.createMediaElementSource(audioRef.current);
+            const analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            analyserRef.current = analyser;
+            dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
+            if (!analyserRef.current || !dataArrayRef.current) {
+                console.log('bad')
+            } else {
+                console.log('good')
+            }
         }
     }, []);
 
@@ -45,8 +63,26 @@ export default function usePlaySpeech() {
         }
     }, []);
 
+    const getAmplitude = useCallback(() => {
+        if (!analyserRef.current || !dataArrayRef.current) {
+            console.log('problem')    
+            return 0;
+        }
+        
+        analyserRef.current.getByteFrequencyData(dataArrayRef.current);
+        
+        let sum = 0;
+        for (let i = 0; i < dataArrayRef.current.length; i++) {
+            sum += dataArrayRef.current[i];
+        }
+        console.log(sum / dataArrayRef.current.length);
+
+        return sum / dataArrayRef.current.length;
+    }, []);
+
     return {
         initAudio,
-        playSpeech
+        playSpeech,
+        getAmplitude
     };
 }
