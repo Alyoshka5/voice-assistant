@@ -18,13 +18,13 @@ export default function Assistant() {
     const [assistantResponseText, setAssistantResponseText] = useState<string>('');
     const [currentCoords, setCurrentCoords] = useState<{ latitude: number, longitude: number } | null>(null);
     const [userQuery, setUserQuery] = useState<string>('');
-    const [userIsSpeaking, setUserIsSpeaking] = useState<boolean>(false);
     const [formInputValue, setFormInputValue] = useState<string>('');
     const ignoreSpeechRef = useRef<boolean>(false);
     const [wakeWordCalled, setWakeWordCalled] = useState<boolean>(false);
     const [displayText, setDisplayText] = useState<string>('');
     const [assistantActivated, setAssistantActivated] = useState<boolean>(false);
     const [displayPanel, setDisplayPanel] = useState<ReactElement>(<></>);
+    const userIsSpeakingRef = useRef<boolean>(false);
 
     const { getResponse } = useOpenAI();
     const { initAudio, playSpeech, getAmplitude } = usePlaySpeech();
@@ -82,7 +82,7 @@ export default function Assistant() {
 
         setFormInputValue('');
         ignoreSpeechRef.current = true; // ignore any speech input while form is submitted
-        setUserIsSpeaking(false);
+        userIsSpeakingRef.current = false;
         stopListening(); // will automatically start listening after
         setUserQuery(formInputValue);
         await getAssistantResponse(formInputValue);
@@ -114,12 +114,14 @@ export default function Assistant() {
         const keyIndex = text.toLowerCase().indexOf(assistantName);
         
         if (!ignoreSpeechRef.current) {
-            setUserIsSpeaking(true);
-            
-            if (keyIndex >= 0) 
+            if (keyIndex >= 0) {
+                userIsSpeakingRef.current = true; 
                 setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
-            else if (wakeWordCalled)
+            }
+            else if (wakeWordCalled) {
+                userIsSpeakingRef.current = true;
                 setUserQuery(text);
+            }
         }
     }, [text]);
 
@@ -135,8 +137,8 @@ export default function Assistant() {
         if (wakeWordCalled)
             setWakeWordCalled(false);
 
-        if (userIsSpeaking && !ignoreSpeechRef.current) {
-            setUserIsSpeaking(false);
+        if (userIsSpeakingRef.current && !ignoreSpeechRef.current) {
+            userIsSpeakingRef.current = false;
             getAssistantResponse(userQuery);
         }
     }, [isFinal]);
@@ -176,7 +178,7 @@ export default function Assistant() {
                 </button>
             }
 
-            <ParticleOrb getAmplitude={getAmplitude} />
+            <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={userIsSpeakingRef} />
 
             <form action={signOut}>
                 <button type="submit">Sign Out</button>

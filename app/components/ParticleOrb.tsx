@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export default function ParticleOrb({ getAmplitude }: { getAmplitude: () => number }) {
+export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAmplitude: () => number, userIsSpeakingRef: RefObject<boolean> }) {
     const mountRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -66,10 +66,21 @@ export default function ParticleOrb({ getAmplitude }: { getAmplitude: () => numb
         scene.add(particles);
 
         let time = 0;
+        let timeSpeed = 0.01;
+        const targetColorIdle = new THREE.Color(0xffffff);
+        const targetColorSpeaking = new THREE.Color(0x66ccff);
+        let currentColor = new THREE.Color(0xffffff);
 
         const animate = () => {
             requestAnimationFrame(animate);
-            time += 0.01;
+            const targetSpeed = userIsSpeakingRef.current ? 0.08 : 0.01;
+            timeSpeed = THREE.MathUtils.lerp(timeSpeed, targetSpeed, 0.1);
+            time += timeSpeed;
+
+            const targetColor = userIsSpeakingRef.current ? targetColorSpeaking : targetColorIdle;
+            currentColor.lerp(targetColor, 0.05);
+            particleMaterial.color.copy(currentColor);
+
 
             const positionAttr = particleGeometry.getAttribute("position") as THREE.BufferAttribute;
 
