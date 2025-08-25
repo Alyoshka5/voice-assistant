@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import primaryFont from './fonts';
+import './global.css'
 
 export const metadata: Metadata = {
 	title: "Apex",
