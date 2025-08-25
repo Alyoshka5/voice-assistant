@@ -1,0 +1,17 @@
+.player_container {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin: 0.5rem 0;
+}
+
+.player_wrapper {
+    position: relative;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0 10px #9f9fcd;
+}
