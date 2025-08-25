@@ -7,7 +7,7 @@ export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAm
     const mountRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const canvasWidth = 1500;
+        const canvasWidth = 400;
         const canvasHeight = 400;
         const scene = new THREE.Scene();
 
@@ -68,7 +68,9 @@ export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAm
         let time = 0;
         let timeSpeed = 0.01;
         const targetColorIdle = new THREE.Color(0xffffff);
+        // const targetColorSpeaking = new THREE.Color(0x8882d0);
         const targetColorSpeaking = new THREE.Color(0x66ccff);
+        // const targetColorSpeaking = new THREE.Color(0xbe93ff);
         let currentColor = new THREE.Color(0xffffff);
 
         const animate = () => {
@@ -114,6 +116,7 @@ export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAm
 
         return () => {
             mountRef.current?.removeChild(renderer.domElement);
+            renderer.dispose();
         };
     }, []);
 

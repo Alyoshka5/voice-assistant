@@ -1,5 +1,8 @@
 'use client'
 
+import styles from './Assistant.module.css'
+import Icon from '@mdi/react'
+import { mdiSend, mdiLogout, mdiPower } from '@mdi/js'
 import signOut from "@/app/actions/signout";
 import useOpenAI from "@/app/hooks/useOpenAI";
 import { useEffect, useState, useRef, ReactElement } from "react";
@@ -151,38 +154,57 @@ export default function Assistant() {
     }, [userQuery]);
 
     return (
-        <div>
-            {assistantActivated ?
-                <>
-                    <p>{displayText}</p>
-                    <form onSubmit={handleQueryFormSubmit}>
-                        <input
-                            type="text"
-                            name="textQuery"
-                            placeholder="Type to Apex..."
-                            value={formInputValue}
-                            onChange={(e) => setFormInputValue(e.target.value)}
-                        />
-                        <button type="submit">Send</button>
-                    </form>
-                    <p>{assistantResponseText}</p>
-                    {displayPanel}
-                </>
-            :
-                <button onClick={() => {
-                    setAssistantActivated(true);
-                    initAudio();
-                }}>
-                    
-                    Activate Apex
-                </button>
-            }
+        <div className={styles.page}>
+            <div className={styles.menu_bar}>
+                { assistantActivated ?
+                    ''
+                :
+                    <button className={`${styles.menu_button} ${styles.activate_button}`} onClick={() => {
+                        setAssistantActivated(true);
+                        initAudio();
+                    }}>
+                        <Icon path={mdiPower} size={1} color="#9f9fcd"/>
+                    </button>
+                }
+                <form action={signOut} className={styles.signout_form}>
+                    <button type="submit" className={styles.menu_button}><Icon path={mdiLogout} size={1} color="#9f9fcd"/></button>
+                </form>
+            </div>
 
-            <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={userIsSpeakingRef} />
+            <div className={styles.assistant}>
+                <div className={styles.particle_container}>
+                    <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={userIsSpeakingRef} />
+                </div>
 
-            <form action={signOut}>
-                <button type="submit">Sign Out</button>
-            </form>
+                <div className={styles.conversation_content}>
+                    <div className={styles.conversation_info}>
+                        {assistantActivated ?
+                            <>
+                                <p className={styles.user_query}>{displayText}</p>
+                                <p className={styles.assistant_response}>{assistantResponseText}</p>
+                                {displayPanel}
+                            </>
+                        :
+                            ''
+                        }
+                    </div>
+                    {assistantActivated ?
+                        <form onSubmit={handleQueryFormSubmit} className={styles.query_form}>
+                            <input
+                                type="text"
+                                name="textQuery"
+                                placeholder="Say 'Apex' or type here..."
+                                value={formInputValue}
+                                autoComplete="off"
+                                onChange={(e) => setFormInputValue(e.target.value)}
+                                />
+                            <button type="submit"><Icon path={mdiSend} size={1} color="#9f9fcd"/></button>
+                        </form>
+                    :
+                        ''
+                    }
+                </div>
+            </div>
         </div>
     )
     
