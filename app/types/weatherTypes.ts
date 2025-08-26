@@ -32,9 +32,9 @@ export type ForecastDetails = {
 export type CurrentWeatherDetails = {
     weatherIcon: string,
     temperature: number,
+    description: string,
     feelsLike: number,
     precipitation: number,
-    humidity: number,
     windSpeed: number
 }
 

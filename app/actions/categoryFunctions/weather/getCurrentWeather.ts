@@ -31,10 +31,10 @@ export default async function getCurrentWeather(coordinates: Coordinates, conver
         action: 'displayCurrentWeatherTab',
         details: {
             weatherIcon: weatherData.weatherCondition.iconBaseUri,
+            description: weatherData.weatherCondition.description.text,
             temperature: weatherData.temperature.degrees,
             feelsLike: weatherData.feelsLikeTemperature.degrees,
             precipitation: weatherData.precipitation.probability.percent,
-            humidity: weatherData.relativeHumidity,
             windSpeed: weatherData.wind.speed.value
         }
     };
