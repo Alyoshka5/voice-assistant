@@ -1,4 +1,4 @@
-import styles from  './Youtube.module.css'
+import styles from  './YoutubePlayer.module.css'
 import ReactPlayer from 'react-player';
 
 export default function YoutubePlayer({ videoId }: { videoId: string }) {
