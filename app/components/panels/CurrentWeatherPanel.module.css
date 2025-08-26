@@ -1,0 +1,80 @@
+.panel {
+    color: #ffffff;
+    display: flex;
+    padding: 1rem 2rem;
+    box-shadow: 0 0 10px #9f9fcd;
+    border-radius: 1rem;
+    gap: 1rem;
+    align-items: center;
+    height: fit-content;
+    overflow: hidden;
+    max-width: 80vw;
+}
+
+.icon {
+    height: 80%;
+    margin-top: -1rem;
+}
+
+.temperature {
+    margin: 0;
+    padding: 0;
+    line-height: 90%;
+}
+
+.description {
+    margin: 0;
+}
+
+.secondary_info {
+    color: #9f9fcd;
+}
+
+@media only screen and (max-width: 600px) {
+    .temperature {
+        font-size: 3rem;
+    }
+
+    .description {
+        font-size: 1rem;
+    }
+
+    .secondary_info {
+        font-size: 0.9rem;
+        margin-left: 1rem;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .temperature {
+        font-size: 3.5rem;
+    }
+
+    .description {
+        font-size: 1.1rem;
+    }
+
+    .secondary_info {
+        font-size: 1rem;
+        margin-left: 3rem;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .temperature {
+        font-size: 4.5rem;
+    }
+
+    .description {
+        font-size: 1.2rem;
+    }
+
+    .secondary_info {
+        font-size: 1.1rem;
+        margin-left: 3rem;
+    }
+}
+
+.secondary_info * {
+    margin: 0.5rem 0;
+}
