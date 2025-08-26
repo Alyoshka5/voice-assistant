@@ -25,7 +25,7 @@
 }
 
 .signout_form {
-    margin: 1.5rem 1rem;
+    margin: 1rem;
 }
 
 .menu_button {
@@ -58,6 +58,7 @@
     flex-direction: column;
     align-items: center;
     flex: 1;
+    height: 100%;
 }
 
 .user_query {
@@ -76,12 +77,13 @@
 
 .query_form {
     width: clamp(15rem, 32vw, 34rem);
-    margin: 1.5rem 0;
+    margin: auto 0 1rem 0;
     padding: 0.3rem 0.3rem 0.3rem 1rem;
     border: 1px solid #9f9fcd;
     border-radius: 2rem;
     display: flex;
     justify-content: space-between;
+    justify-self: flex-end;
 }
 
 .query_form input {
