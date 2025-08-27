@@ -1,6 +1,7 @@
 import { Conversation, OpenAIResponseOutput, UserRequestDetails } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 import functionSignatures from './tasksFunctionSignatures'
+import getAllTaskLists from "./getAllTaskLists";
 
 const systemMessage = `Use the Google tasks/todo functions and request context to respond helpfully and briefly.`
 
@@ -19,6 +20,9 @@ export default async function tasksFunctionController(conversation: Conversation
     const functionName = output.name;
     
     switch (functionName) {
+        case 'getAllTaskLists':
+            return await getAllTaskLists();
+
         default:
             return {
                 outputText: `Sorry, I don't understand your request. Please try again with a different question.`,
