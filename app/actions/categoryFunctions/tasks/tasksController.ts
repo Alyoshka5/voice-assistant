@@ -4,6 +4,7 @@ import functionSignatures from './tasksFunctionSignatures'
 import getAllTaskLists from "./getAllTaskLists";
 import createTaskList from "./createTaskList";
 import addTaskToList from "./addTaskToList";
+import getTasksFromList from "./getTasksFromList";
 
 const systemMessage = `Use the Google tasks/todo functions and request context to respond helpfully and briefly.`
 
@@ -31,6 +32,9 @@ export default async function tasksFunctionController(conversation: Conversation
 
         case 'addTaskToList':
             return await addTaskToList(args);
+
+        case 'getTasksFromList':
+            return await getTasksFromList(args.listName)
 
         default:
             return {

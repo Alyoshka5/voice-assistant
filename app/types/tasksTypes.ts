@@ -15,3 +15,16 @@ export type AddTaskToListDetails = {
     taskName: string;
     listName: string;
 }
+
+export type TaskItem = {
+    kind: string,
+    id: string,
+    etag: string,
+    title: string,
+    updated: string,
+    selfLink: string,
+    position: string,
+    status: string,
+    links: string[],
+    webViewLink: string
+}
