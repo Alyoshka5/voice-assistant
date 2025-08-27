@@ -6,11 +6,11 @@ import createTaskList from "./createTaskList";
 import addTaskToList from "./addTaskToList";
 import getTasksFromList from "./getTasksFromList";
 
-const systemMessage = `Use the Google tasks/todo functions and request context to respond helpfully and briefly.`
+const systemMessage = `The user will ask you to manage tasks. Choose the most direct function that matches the request.`
 
 export default async function tasksFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
     const openaiResponse = await openAIClient.responses.create({
-        model: 'gpt-4.1-nano',
+        model: 'gpt-4.1-mini',
         input: [
             { role: 'system', content: systemMessage },
             ...conversation,

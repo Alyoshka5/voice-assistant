@@ -31,7 +31,7 @@ const createTaskList = {
 const addTaskToList = {
     type: "function" as const,
     name: "addTaskToList",
-    description: "Creates and adds a new task/todo to a specified list",
+    description: "Adds a new task to an existing task list. Use this whenever the user asks to add or create a task inside a list.",
     parameters: {
         type: "object",
         properties: {
