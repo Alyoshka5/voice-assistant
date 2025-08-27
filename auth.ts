@@ -10,7 +10,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         clientSecret: process.env.AUTH_GOOGLE_SECRET,
         authorization: {
             params: {
-                scope: 'openid email profile https://www.googleapis.com/auth/youtube.force-ssl',
+                scope: 'openid email profile https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/tasks',
                 access_type: 'offline',
             }
         }
