@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { TaskList } from '@/app/types/types';
 
-export default async function getYouTubeVideoId() {
+export default async function getAllTaskLists() {
     const session = await auth();
     if (!session) 
         return {outputText: 'You need to be signed in to find a your lists.'}
