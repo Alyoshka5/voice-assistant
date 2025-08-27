@@ -5,6 +5,7 @@ import getAllTaskLists from "./getAllTaskLists";
 import createTaskList from "./createTaskList";
 import addTaskToList from "./addTaskToList";
 import getTasksFromList from "./getTasksFromList";
+import completeTaskInList from "./completeTaskInList";
 
 const systemMessage = `The user will ask you to manage tasks. Choose the most direct function that matches the request.`
 
@@ -35,6 +36,9 @@ export default async function tasksFunctionController(conversation: Conversation
 
         case 'getTasksFromList':
             return await getTasksFromList(args.listName)
+
+        case 'completeTaskInList':
+            return await completeTaskInList(args);
 
         default:
             return {

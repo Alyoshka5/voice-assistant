@@ -68,11 +68,34 @@ const getTasksFromList = {
     strict: true,
 }
 
+const completeTaskInList = {
+    type: "function" as const,
+    name: "completeTaskInList",
+    description: "Marks a task as complete in a specified task/todo list",
+    parameters: {
+        type: "object",
+        properties: {
+            taskName: {
+                type: "string",
+                description: "The name of the task to complete",
+            },
+            listName: {
+                type: "string",
+                description: "The name of the list to add the task to",
+            }
+        },
+        required: ["taskName", "listName"],
+        additionalProperties: false
+    },
+    strict: true,
+}
+
 const functionSignatures = [
     getAllTaskLists,
     createTaskList,
     addTaskToList,
-    getTasksFromList
+    getTasksFromList,
+    completeTaskInList
 ]
 
 export default functionSignatures;
