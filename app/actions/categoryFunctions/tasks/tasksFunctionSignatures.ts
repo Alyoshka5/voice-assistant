@@ -10,8 +10,27 @@ const getAllTaskLists = {
     strict: true,
 }
 
+const createTaskList = {
+    type: "function" as const,
+    name: "createTaskList",
+    description: "Creates a new task/todo list",
+    parameters: {
+        type: "object",
+        properties: {
+            title: {
+                type: "string",
+                description: "The title of the new task list",
+            },
+        },
+        required: ["title"],
+        additionalProperties: false
+    },
+    strict: true,
+}
+
 const functionSignatures = [
-    getAllTaskLists
+    getAllTaskLists,
+    createTaskList
 ]
 
 export default functionSignatures;
