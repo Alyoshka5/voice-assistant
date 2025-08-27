@@ -6,3 +6,12 @@ export type TaskList = {
     selfLink: string;
     etag: string;
 }
+
+export type TaskListsList = {
+    items: TaskList[];
+}
+
+export type AddTaskToListDetails = {
+    taskName: string;
+    listName: string;
+}

@@ -3,6 +3,7 @@ import openAIClient from "@/app/lib/openai";
 import functionSignatures from './tasksFunctionSignatures'
 import getAllTaskLists from "./getAllTaskLists";
 import createTaskList from "./createTaskList";
+import addTaskToList from "./addTaskToList";
 
 const systemMessage = `Use the Google tasks/todo functions and request context to respond helpfully and briefly.`
 
@@ -27,6 +28,9 @@ export default async function tasksFunctionController(conversation: Conversation
 
         case 'createTaskList':
             return await createTaskList(args.title);
+
+        case 'addTaskToList':
+            return await addTaskToList(args);
 
         default:
             return {
