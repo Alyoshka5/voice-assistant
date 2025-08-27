@@ -11,7 +11,7 @@ export type TaskListsList = {
     items: TaskList[];
 }
 
-export type AddTaskToListDetails = {
+export type TaskDetails = {
     taskName: string;
     listName: string;
 }

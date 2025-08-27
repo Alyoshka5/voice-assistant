@@ -1,9 +1,9 @@
 import openAIClient from "@/app/lib/openai";
 import { auth } from "@/auth";
-import { AddTaskToListDetails, TaskList, TaskListsList } from "@/app/types/types";
+import { TaskDetails, TaskList, TaskListsList } from "@/app/types/types";
 
 
-export default async function addTaskToList(details: AddTaskToListDetails) {
+export default async function addTaskToList(details: TaskDetails) {
     const session = await auth();
     if (!session)
         return {outputText: 'You need to be signed in to add a task.'}
