@@ -53,7 +53,7 @@ export default async function addTaskToList(details: TaskDetails) {
     let taskListName = taskListData.items.find((list: TaskList) => list.id === taskListId)?.title;
     const openaiDefaultTaskListIds = ['', '\'\'', '""', '```plaintext\n```']
     if (openaiDefaultTaskListIds.includes(taskListId)) { // task list doesn't exist
-        const taskListId = await createTaskList(requestedListName, accessToken);
+        taskListId = await createTaskList(requestedListName, accessToken);
         taskListName = requestedListName;
         if (taskListId === '')
             return {outputText: `Sorry, I couldn't find or create a list with the name ${requestedListName}.`}
