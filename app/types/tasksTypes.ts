@@ -14,6 +14,11 @@ export type TaskListsList = {
 export type TaskDetails = {
     taskName: string;
     listName: string;
+    dueDate?: {
+        year: number;
+        month: number;
+        day: number;
+    }
 }
 
 export type TaskItem = {

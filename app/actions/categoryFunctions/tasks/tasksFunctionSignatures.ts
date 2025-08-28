@@ -90,12 +90,54 @@ const completeTaskInList = {
     strict: true,
 }
 
+const setTaskDueDate = {
+    type: "function" as const,
+    name: "setTaskDueDate",
+    description: "Sets a due date for a task in a specified task/todo list",
+    parameters: {
+        type: "object",
+        properties: {
+            taskName: {
+                type: "string",
+                description: "The name of the task to set a due date for",
+            },
+            listName: {
+                type: "string",
+                description: "The name of the list containing the task",
+            },
+            dueDate: {
+                type: "object",
+                properties: {
+                    year: {
+                        type: "number",
+                        description: "Year of the due date"
+                    },
+                    month: {
+                        type: "number",
+                        description: "Month of the due date"
+                    },
+                    day: {
+                        type: "number",
+                        description: "Day of the due date"
+                    }
+                },
+                required: ["year", "month", "day"],
+                additionalProperties: false
+            }
+        },
+        required: ["taskName", "listName", "dueDate"],
+        additionalProperties: false
+    },
+    strict: true,
+}
+
 const functionSignatures = [
     getAllTaskLists,
     createTaskList,
     addTaskToList,
     getTasksFromList,
-    completeTaskInList
+    completeTaskInList,
+    setTaskDueDate
 ]
 
 export default functionSignatures;

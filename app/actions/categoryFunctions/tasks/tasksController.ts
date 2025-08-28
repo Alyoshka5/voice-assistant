@@ -6,14 +6,15 @@ import createTaskList from "./createTaskList";
 import addTaskToList from "./addTaskToList";
 import getTasksFromList from "./getTasksFromList";
 import completeTaskInList from "./completeTaskInList";
+import setTaskDueDate from "./setTaskDueDate";
 
-const systemMessage = `The user will ask you to manage tasks. Choose the most direct function that matches the request.`
+const systemMessage = `The user will ask you to manage tasks. Choose the most direct function that matches the request. Today is `
 
 export default async function tasksFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
     const openaiResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-mini',
         input: [
-            { role: 'system', content: systemMessage },
+            { role: 'system', content: systemMessage + userRequestDetails.date },
             ...conversation,
         ],
         tools: functionSignatures
@@ -39,6 +40,9 @@ export default async function tasksFunctionController(conversation: Conversation
 
         case 'completeTaskInList':
             return await completeTaskInList(args);
+
+        case 'setTaskDueDate':
+            return await setTaskDueDate(args);
 
         default:
             return {
