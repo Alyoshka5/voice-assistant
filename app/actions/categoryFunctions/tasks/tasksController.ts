@@ -8,7 +8,13 @@ import getTasksFromList from "./getTasksFromList";
 import completeTaskInList from "./completeTaskInList";
 import setTaskDueDate from "./setTaskDueDate";
 
-const systemMessage = `The user will ask you to manage tasks. Choose the most direct function that matches the request. Today is `
+const systemMessage = `
+You are a task management assistant. 
+The user will ask you to manage tasks. 
+Always respond by selecting the most direct function that matches the request. 
+Never answer questions about tasks or lists from memory — always call a function so the information is fresh and correct.
+Today is `
+
 
 export default async function tasksFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
     const openaiResponse = await openAIClient.responses.create({
