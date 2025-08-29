@@ -14,6 +14,7 @@ You are a voice assistant. Classify the user's request into one of these categor
 - other
 - youtube
 - tasks/todo
+- calendar
 
 Respond with a just the category name, without any additional text or explanation.
 
