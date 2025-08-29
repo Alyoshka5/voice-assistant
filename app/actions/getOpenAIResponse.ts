@@ -11,10 +11,10 @@ const systemMessage = `
 You are a voice assistant. Classify the user's request into one of these categories:
 
 - weather
-- other
 - youtube
 - tasks/todo
 - calendar
+- other
 
 Respond with a just the category name, without any additional text or explanation.
 
