@@ -1,6 +1,7 @@
 import { Coordinates, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails } from './weatherTypes';
 import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from './youtubeTypes';
 import { TaskList, TaskDetails, TaskListsList, TaskItem } from './tasksTypes';
+import { CalendarItem, CalendarList, EventItem } from './calendarTypes';
 
 export type AuthToken = {
     accessToken: string;
@@ -49,3 +50,4 @@ export type DateObject = {
 export type { Coordinates, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails }
 export type { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList };
 export type { TaskList, TaskDetails, TaskListsList, TaskItem };
+export type { CalendarItem, CalendarList, EventItem };

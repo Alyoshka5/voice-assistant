@@ -1,6 +1,7 @@
 import { Conversation, OpenAIResponseOutput, UserRequestDetails } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 import functionSignatures from './calendarFunctionSignatures';
+import getEventsFromCalendar from "./getEventsFromCalendar";
 
 const systemMessage = `
 You are a calendar management assistant. 
@@ -26,6 +27,8 @@ export default async function tasksFunctionController(conversation: Conversation
     const functionName = output.name;
     
     switch (functionName) {
+        case 'getEventsFromCalendar':
+            return await getEventsFromCalendar(args.calendarName, userRequestDetails.date, userRequestDetails.time);
 
         default:
             return {
