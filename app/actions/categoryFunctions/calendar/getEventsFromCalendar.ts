@@ -30,12 +30,12 @@ export default async function getEventsFromCalendar(requestedCalendarName: strin
         return `Name: ${calendar.summary}, ID: ${calendar.id}`;
     });
     
-    const taskListIdentifierMessage = createCalendarIdentifierMessage(calendarNames, requestedCalendarName);
+    const calendarIdentifierMessage = createCalendarIdentifierMessage(calendarNames, requestedCalendarName);
     let openaiResponse;
     try {
         openaiResponse = await openAIClient.responses.create({
             model: "gpt-4.1-nano",
-            input: taskListIdentifierMessage
+            input: calendarIdentifierMessage
         });
         if (openaiResponse.error)
             throw new Error(openaiResponse.error.message);
@@ -49,8 +49,8 @@ export default async function getEventsFromCalendar(requestedCalendarName: strin
     }
 
     let calendarName = calendarListData.items.find((calendar: CalendarItem) => calendar.id === calendarId)?.summary;
-    const openaiDefaultTaskListIds = ['', '\'\'', '""', '```plaintext\n```']
-    if (openaiDefaultTaskListIds.includes(calendarId)) { // task list doesn't exist
+    const openaiDefaultIds = ['', '\'\'', '""', '```plaintext\n```']
+    if (openaiDefaultIds.includes(calendarId)) { // calendar doesn't exist
         return {outputText: `Sorry, I couldn't find a calendar with the name ${requestedCalendarName}.`}
     }
 
