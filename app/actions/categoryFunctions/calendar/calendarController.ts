@@ -2,20 +2,21 @@ import { Conversation, OpenAIResponseOutput, UserRequestDetails } from "@/app/ty
 import openAIClient from "@/app/lib/openai";
 import functionSignatures from './calendarFunctionSignatures';
 import getEventsFromCalendar from "./getEventsFromCalendar";
+import addEventToCalendar from "./addEventToCalendar";
 
 const systemMessage = `
 You are a calendar management assistant. 
 The user will ask you to manage their calendars. 
 Always respond by selecting the most direct function that matches the request. 
 Never answer questions about calendars or events from memory — always call a function so the information is fresh and correct.
-Today is `
+Right now is `
 
 
 export default async function tasksFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
     const openaiResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-mini',
         input: [
-            { role: 'system', content: systemMessage + userRequestDetails.date },
+            { role: 'system', content: systemMessage + userRequestDetails.date + ' ' + userRequestDetails.time },
             ...conversation,
         ],
         tools: functionSignatures
@@ -29,6 +30,9 @@ export default async function tasksFunctionController(conversation: Conversation
     switch (functionName) {
         case 'getEventsFromCalendar':
             return await getEventsFromCalendar(args.calendarName, userRequestDetails.date, userRequestDetails.time);
+
+        case 'addEventToCalendar':
+            return await addEventToCalendar(args, userRequestDetails.isoNow, userRequestDetails.timeZone);
 
         default:
             return {

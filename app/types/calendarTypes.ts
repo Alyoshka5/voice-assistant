@@ -2,6 +2,7 @@ export type CalendarItem = {
     id: string;
     summary: string;
     description: string;
+    accessRole?: string;
 }
 
 export type CalendarList = {
@@ -21,4 +22,12 @@ export type EventItem = {
         timeZone?: string;
         date?: string;
     };
+}
+
+export type CalendarEventDetails = {
+    calendarName: string;
+    eventName: string;
+    relativeDate: string;
+    relativeTime: string;
+    duration: string;
 }

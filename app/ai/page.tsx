@@ -41,11 +41,15 @@ export default function Assistant() {
             day: 'numeric',
         });
         const localTime = date.toLocaleTimeString('en-US');
+        const isoNow = date.toISOString();
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         const output = await getResponse(query, {
             coordinates: currentCoords, 
             date: localDate,
-            time: localTime
+            time: localTime,
+            isoNow: isoNow,
+            timeZone: userTimeZone
         });
 
         if (output !== null && output !== '') {
