@@ -12,7 +12,7 @@ Never answer questions about calendars or events from memory — always call a f
 Right now is `
 
 
-export default async function tasksFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
+export default async function calendarFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
     const openaiResponse = await openAIClient.responses.create({
         model: 'gpt-4.1-mini',
         input: [
