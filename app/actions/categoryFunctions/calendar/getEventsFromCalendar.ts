@@ -89,7 +89,7 @@ function createCalendarIdentifierMessage(calendarNames: string[], requestedCalen
 
 async function getEvents(accessToken: string, calendarId: string, currentDateTime: string) {
     let currentISODateTime = (new Date(currentDateTime)).toISOString();
-    const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?maxResults=5&orderBy=startTime&singleEvents=true&timeMin=${currentISODateTime}`, {
+    const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?maxResults=3&orderBy=startTime&singleEvents=true&timeMin=${currentISODateTime}`, {
         headers: {
             Authorization: 'Bearer ' + accessToken,
         }
