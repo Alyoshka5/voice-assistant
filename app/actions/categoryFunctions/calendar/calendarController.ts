@@ -3,6 +3,7 @@ import openAIClient from "@/app/lib/openai";
 import functionSignatures from './calendarFunctionSignatures';
 import getEventsFromCalendar from "./getEventsFromCalendar";
 import addEventToCalendar from "./addEventToCalendar";
+import getEventInformation from "./getEventInformation";
 
 const systemMessage = `
 You are a calendar management assistant. 
@@ -33,6 +34,9 @@ export default async function calendarFunctionController(conversation: Conversat
 
         case 'addEventToCalendar':
             return await addEventToCalendar(args, userRequestDetails.isoNow, userRequestDetails.timeZone);
+
+        case 'getEventInformation':
+            return await getEventInformation(conversation, args.calendarName, args.eventName, userRequestDetails.date, userRequestDetails.time);
 
         default:
             return {

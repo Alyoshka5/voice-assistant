@@ -53,9 +53,32 @@ const addEventToCalendar = {
     strict: true,
 }
 
+const getEventInformation = {
+    type: "function" as const,
+    name: "getEventInformation",
+    description: "Gets information about a specific event from a user's calendar based on user query",
+    parameters: {
+        type: "object",
+        properties: {
+            calendarName: {
+                type: "string",
+                default: "",
+            },
+            eventName: {
+                type: "string",
+                default: "",
+            },
+        },
+        required: ["calendarName", "eventName",],
+        additionalProperties: false
+    },
+    strict: true,
+}
+
 const functionSignatures = [
     getEventsFromCalendar,
-    addEventToCalendar
+    addEventToCalendar,
+    getEventInformation
 ]
 
 export default functionSignatures;

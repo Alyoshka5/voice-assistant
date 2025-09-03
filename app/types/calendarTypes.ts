@@ -29,5 +29,18 @@ export type CalendarEventDetails = {
     eventName: string;
     relativeDate: string;
     relativeTime: string;
-    duration: string;
+    duration: string
+}
+
+export type EventResource = {
+    status: string;
+    summary: string;
+    description?: string;
+    location?: string;
+    creator: {
+        email: string;
+        displayName?: string;
+    };
+    start: string;
+    end: string;
 }
