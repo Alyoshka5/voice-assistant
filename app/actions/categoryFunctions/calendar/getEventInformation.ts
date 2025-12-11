@@ -135,11 +135,10 @@ function createCalendarIdentifierMessage(calendarNames: string[], requestedCalen
 }
 
 function createEventIdentifierMessage(eventNames: string[], requestedEventName: string) {
-    return `Given a list of calendar names and ids, respond with the calendar id of the most relevant calendar name based on the user's request.
-    If no relevant calendar is found, return an empty string. Do not return anything except for the calendar id or an empty string.
-    Do not exclude @group.calendar.google.com from ids that contain it.
-    Calendar Names and IDs: ${eventNames.join('\n')}
-    Requested calendar name: ${requestedEventName}`;
+    return `Given a list of event names and ids, respond with the event id of the most relevant event name based on the user's request.
+    If no relevant event is found, return an empty string. Do not return anything except for the event id or an empty string.
+    Event Names and IDs: ${eventNames.join('\n')}
+    Requested event name: ${requestedEventName}`;
 }
 
 function createEventInformationMessage(calendarName: string, eventDetails: EventResource) {
