@@ -1,0 +1,55 @@
+.container {
+    width: max(42vw, 25rem);
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem;
+    line-height: 1.6;
+    color: #fff;
+}
+  
+.title {
+    font-size: 2.4rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+  
+.updated {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+    font-size: 1.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.text {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.list {
+    margin-left: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.list li {
+    margin-bottom: 0.3rem;
+}
+
+.contact {
+    font-weight: bold;
+    font-size: 1.05rem;
+    color: #fff;
+}
+  
+.link {
+    color: #9f9fcd;
+}
