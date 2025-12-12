@@ -17,7 +17,7 @@
         "@types/dom-speech-recognition": "^0.0.6",
         "chrono-node": "^2.8.4",
         "luxon": "^3.7.1",
-        "next": "15.3.4",
+        "next": "^15.3.8",
         "next-auth": "^5.0.0-beta.29",
         "openai": "^5.8.2",
         "react": "^19.0.0",
