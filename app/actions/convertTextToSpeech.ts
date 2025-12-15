@@ -6,7 +6,7 @@ import { Buffer } from 'buffer';
 const client = new textToSpeech.TextToSpeechClient({
     credentials: {
         client_email: process.env.GCP_CLIENT_EMAIL,
-        private_key: process.env.GCP_PRIVATE_KEY
+        private_key: process.env.GCP_PRIVATE_KEY?.split(String.raw`\n`).join('\n')
     }
 });
 
