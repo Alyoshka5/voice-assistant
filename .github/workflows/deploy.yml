@@ -1,0 +1,50 @@
+name: Deploy to ECS
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build, Tag, and Push to ECR
+        run: |
+          IMAGE_TAG="${GITHUB_REF#refs/tags/}"
+          docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=${{ vars.NEXT_PUBLIC_SUPABASE_URL }} --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }} --platform linux/amd64 -t ${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker push ${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
+  
+  deploy-production:
+    needs: build-and-push
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Deploy to ECS
+        run: |
+          TASK_DEF=$(aws ecs describe-task-definition --task-definition ${{ vars.ECS_TASK_DEFINITION_PRODUCTION }} --region ${{ vars.AWS_REGION }})
+          NEW_TASK_DEF=$(echo "$TASK_DEF" | jq --arg IMAGE "${{ secrets.ECR_REPOSITORY }}:${{ github.ref_name }}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
+          NEW_TASK_RESP=$(aws ecs register-task-definition --region ${{ vars.AWS_REGION }} --cli-input-json "$NEW_TASK_DEF")
+          NEW_REVISION=$(echo "$NEW_TASK_RESP" | jq -r '.taskDefinition.family + ":" + (.taskDefinition.revision | tostring)')
+          aws ecs update-service --cluster ${{ vars.ECS_CLUSTER_PRODUCTION }} --service ${{ vars.ECS_SERVICE_PRODUCTION }} --task-definition "$NEW_REVISION" --region ${{ vars.AWS_REGION }}
+          aws ecs wait services-stable --cluster ${{ vars.ECS_CLUSTER_PRODUCTION }} --services ${{ vars.ECS_SERVICE_PRODUCTION }} --region ${{ vars.AWS_REGION }}
