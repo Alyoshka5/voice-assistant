@@ -1,0 +1,17 @@
+.signout_form {
+    margin: 1rem;
+}
+
+.menu_button {
+    background-color: transparent;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 10rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.menu_button:hover {
+    background-color: #1f1f59c7;
+}

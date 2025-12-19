@@ -1,9 +1,6 @@
 'use client'
 
 import styles from './Assistant.module.css'
-import Icon from '@mdi/react'
-import { mdiSend, mdiLogout, mdiPower } from '@mdi/js'
-import signOut from "@/app/actions/signout";
 import useOpenAI from "@/app/hooks/useOpenAI";
 import { useEffect, useState, useRef, ReactElement } from "react";
 import useSpeechRecognition from "@/app/hooks/useSpeechRecognition";
@@ -13,6 +10,10 @@ import CurrentWeatherPanel from "@/app/components/panels/currentWeatherPanel";
 import FutureWeatherForecastPanel from "../components/panels/FutureWeatherForecastPanel";
 import { CurrentWeatherDetails, FutureWeatherForecastDetails } from "../types/types";
 import ParticleOrb from "@/app/components/ParticleOrb";
+import ActivationButton from './ActivationButton';
+import SignOutButton from '@/app/components/SignOutButton';
+import ConversationInfo from './ConversationInfo';
+import QueryForm from './QueryForm';
 
 const assistantName = 'apex';
 
@@ -160,19 +161,8 @@ export default function Assistant() {
     return (
         <div className={styles.page}>
             <div className={styles.menu_bar}>
-                { assistantActivated ?
-                    ''
-                :
-                    <button className={`${styles.menu_button} ${styles.activate_button}`} onClick={() => {
-                        setAssistantActivated(true);
-                        initAudio();
-                    }}>
-                        <Icon path={mdiPower} size={1} color="#9f9fcd"/>
-                    </button>
-                }
-                <form action={signOut} className={styles.signout_form}>
-                    <button type="submit" className={styles.menu_button}><Icon path={mdiLogout} size={1} color="#9f9fcd"/></button>
-                </form>
+                <ActivationButton assistantActivated={assistantActivated} setAssistantActivated={setAssistantActivated} initAudio={initAudio} />
+                <SignOutButton />
             </div>
 
             <div className={styles.assistant}>
@@ -181,32 +171,8 @@ export default function Assistant() {
                 </div>
 
                 <div className={styles.conversation_content}>
-                    <div className={styles.conversation_info}>
-                        {assistantActivated ?
-                            <>
-                                <p className={styles.user_query}>{displayText}</p>
-                                <p className={styles.assistant_response}>{assistantResponseText}</p>
-                                {displayPanel}
-                            </>
-                        :
-                            ''
-                        }
-                    </div>
-                    {assistantActivated ?
-                        <form onSubmit={handleQueryFormSubmit} className={styles.query_form}>
-                            <input
-                                type="text"
-                                name="textQuery"
-                                placeholder="Say 'Apex' or type here..."
-                                value={formInputValue}
-                                autoComplete="off"
-                                onChange={(e) => setFormInputValue(e.target.value)}
-                                />
-                            <button type="submit"><Icon path={mdiSend} size={1} color="#9f9fcd"/></button>
-                        </form>
-                    :
-                        ''
-                    }
+                    <ConversationInfo assistantActivated={assistantActivated} displayText={displayText} assistantResponseText={assistantResponseText} displayPanel={displayPanel} />
+                    <QueryForm assistantActivated={assistantActivated} handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} />
                 </div>
             </div>
         </div>
