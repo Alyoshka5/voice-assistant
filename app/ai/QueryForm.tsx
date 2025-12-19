@@ -15,7 +15,7 @@ export default function QueryForm({ assistantActivated, handleQueryFormSubmit, f
     return (
         <>
             {assistantActivated ?
-                <form onSubmit={handleQueryFormSubmit} className={styles.query_form}>
+                <form onSubmit={handleQueryFormSubmit} className={styles.query_form} aria-label='form'>
                     <input
                         type="text"
                         name="textQuery"
