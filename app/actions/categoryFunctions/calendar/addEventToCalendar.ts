@@ -64,14 +64,14 @@ export default async function addEventToCalendar(details: CalendarEventDetails, 
     }
     
     let calendarId = openaiResponse.output_text.trim();
-    if (!calendarId.endsWith('.com')) {
-        calendarId += '@group.calendar.google.com'; // append domain if missing
-    }
-    let calendarName = calendarListData.items.find((calendar: CalendarItem) => calendar.id === calendarId)?.summary;
     const openaiDefaultIds = ['', '\'\'', '""', '```plaintext\n```']
     if (openaiDefaultIds.includes(calendarId)) { // calendar doesn't exist
         return {outputText: `Sorry, I couldn't find a calendar with the name ${requestedCalendarName}.`}
     }
+    if (!calendarId.endsWith('.com')) {
+        calendarId += '@group.calendar.google.com'; // append domain if missing
+    }
+    let calendarName = calendarListData.items.find((calendar: CalendarItem) => calendar.id === calendarId)?.summary;
 
     const eventStartDateTime = relativeToAbsoluteStartDateTime(details.relativeDate, details.relativeTime, isoNow, timeZone);
     const eventEndDateTime = eventStartDateTime.allDay ? null : relativeToAbsoluteEndDateTime(eventStartDateTime.dateTime, details.duration);
