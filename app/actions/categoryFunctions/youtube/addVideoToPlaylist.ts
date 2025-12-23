@@ -1,10 +1,9 @@
-import { Conversation } from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
 import { auth } from "@/auth";
 import { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList } from "@/app/types/types";
 
 
-export default async function addVideoToPlaylist(conversation: Conversation, details: AddVideoToPlaylistDetails) {
+export default async function addVideoToPlaylist(details: AddVideoToPlaylistDetails) {
     const session = await auth();
     if (!session)
         return {outputText: 'You need to be signed in to add a video to a playlist.'}
