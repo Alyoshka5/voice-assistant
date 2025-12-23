@@ -87,7 +87,7 @@ describe('calendarFunctionController', () => {
         expect(getEventInformation).not.toHaveBeenCalled();
     })
 
-    it('returns default response when no matching task found', async () => {
+    it('returns default response when no matching calendar function found', async () => {
         vi.mocked(openAIClient.responses.create).mockResolvedValue({
             output: [{ name: '' }]
         } as any)
