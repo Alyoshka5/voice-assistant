@@ -14,14 +14,21 @@ Right now is `
 
 
 export default async function calendarFunctionController(conversation: Conversation, userRequestDetails: UserRequestDetails) {
-    const openaiResponse = await openAIClient.responses.create({
-        model: 'gpt-4.1-mini',
-        input: [
-            { role: 'system', content: systemMessage + userRequestDetails.date + ' ' + userRequestDetails.time },
-            ...conversation,
-        ],
-        tools: functionSignatures
-    });
+    let openaiResponse;
+    try {
+        openaiResponse = await openAIClient.responses.create({
+            model: 'gpt-4.1-mini',
+            input: [
+                { role: 'system', content: systemMessage + userRequestDetails.date + ' ' + userRequestDetails.time },
+                ...conversation,
+            ],
+            tools: functionSignatures
+        });
+        if (openaiResponse.error)
+            throw new Error(openaiResponse.error.message);
+    } catch (error) {
+        return {outputText: `Sorry, I ran into a problem while trying to process your request.`}
+    }
 
     let output: OpenAIResponseOutput = openaiResponse.output[0];
     const args = JSON.parse(output.arguments || '{}');
