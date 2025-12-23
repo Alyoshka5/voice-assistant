@@ -49,15 +49,15 @@ export default async function getEventInformation(conversation: Conversation, re
     }
 
     let calendarId = openaiCalendarResponse.output_text.trim();
+    const openaiDefaultIds = ['', '\'\'', '""', '```plaintext\n```']
+    if (openaiDefaultIds.includes(calendarId)) { // calendar doesn't exist
+        return {outputText: `Sorry, I couldn't find a calendar with the name ${requestedCalendarName}.`}
+    }
     if (!calendarId.endsWith('.com')) {
         calendarId += '@group.calendar.google.com'; // append domain if missing
     }
 
     let calendarName = calendarListData.items.find((calendar: CalendarItem) => calendar.id === calendarId)?.summary;
-    const openaiDefaultIds = ['', '\'\'', '""', '```plaintext\n```']
-    if (openaiDefaultIds.includes(calendarId)) { // calendar doesn't exist
-        return {outputText: `Sorry, I couldn't find a calendar with the name ${requestedCalendarName}.`}
-    }
 
     const currentDateTime = `${currentDate} ${currentTime}`;
     const eventListData = await getEvents(accessToken, calendarId, currentDateTime);
