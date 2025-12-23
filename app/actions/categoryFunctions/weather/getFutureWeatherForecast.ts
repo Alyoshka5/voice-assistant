@@ -1,4 +1,5 @@
 'use server'
+import { auth } from '@/auth';
 
 import { Conversation, Coordinates, ForecastDay, ForecastDetails, DateObject} from "@/app/types/types";
 import openAIClient from "@/app/lib/openai";
@@ -9,11 +10,22 @@ You are a friendly voice assistant. Read the weather data and user request, and 
 Weather Data: `;
 
 export default async function getWeatherForecast(coordinates: Coordinates, conversation: Conversation, targetDate: DateObject) {
+    const session = await auth();
+    if (!session)
+        return {outputText: 'You need to be signed in to check your calendar events.'}
+
+    const accessToken = session.accessToken;
+    if (!accessToken)
+        return {outputText: 'You need to be signed in to check your calendar events.'}
+    
     const apiKey = process.env.GOOGLE_WEATHER_API_KEY;
     const days = 5;
     const url = `https://weather.googleapis.com/v1/forecast/days:lookup?key=${apiKey}&location.latitude=${coordinates.latitude}&location.longitude=${coordinates.longitude}&days=${days}`;
   
     const weatheRresponse = await fetch(url);
+    if (!weatheRresponse.ok)
+        return {outputText: `Sorry, I couldn't get the weather forecast.`}
+
     const weatherData = await weatheRresponse.json();
 
     const targetDateForecast = weatherData.forecastDays.find((forecastDay: ForecastDay) => {
@@ -36,13 +48,20 @@ export default async function getWeatherForecast(coordinates: Coordinates, conve
     forecastDetails.maxTemperature.degrees = Math.round(forecastDetails.maxTemperature.degrees);
     forecastDetails.minTemperature.degrees = Math.round(forecastDetails.minTemperature.degrees);
 
-    const openaiResponse = await openAIClient.responses.create({
-        model: "gpt-4.1-nano",
-        input: [
-            {role: 'system', content: systemMessage + JSON.stringify(forecastDetails)},
-            ...conversation,
-        ],
-    });
+    let openaiResponse 
+    try {
+        openaiResponse = await openAIClient.responses.create({
+            model: "gpt-4.1-nano",
+            input: [
+                {role: 'system', content: systemMessage + JSON.stringify(forecastDetails)},
+                ...conversation,
+            ],
+        });
+        if (openaiResponse.error)
+            throw new Error(openaiResponse.error.message);
+    } catch (error) {
+        return {outputText: `Sorry, I couldn't get the weather forecast.`}
+    }
     
     return {
         outputText: openaiResponse.output_text,
