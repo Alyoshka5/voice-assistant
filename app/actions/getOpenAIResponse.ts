@@ -23,9 +23,13 @@ If you're unsure, return "other". Do not extract details or guess.
 
 export default async function getOpenAIResponse(request: string, userRequestDetails: UserRequestDetails) {
     const session = await auth();
+    if (!session)
+        return {outputText: `You need to be signed in to make a request.`}
+    
     const userEmail = session?.user?.email;
-    if (!userEmail) return '';
-
+    if (!userEmail) {
+        return {outputText: `You need to be signed in to make a request.`}
+    }
 
     let requestCategoryResponse
     try {
