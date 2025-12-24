@@ -30,7 +30,7 @@ export default async function youtubeFunctionController(conversation: Conversati
     
     switch (functionName) {
         case 'addVideoToPlaylist':
-            return await addVideoToPlaylist(conversation, args);
+            return await addVideoToPlaylist(args);
 
         case 'findYoutubeVideo':
             return await findYoutubeVideo(args.videoQuery);
