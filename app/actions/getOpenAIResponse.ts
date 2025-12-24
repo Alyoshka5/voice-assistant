@@ -7,21 +7,10 @@ import { Role } from "@prisma/client";
 import categoryControllers from "./categoryFunctions/controllerExporter";
 import { UserRequestDetails } from "../types/types";
 
-const systemMessage = `
-You are a voice assistant. Classify the user's request into one of these categories:
-
-- weather
-- youtube
-- tasks/todo
-- calendar
-- other
-
-Respond with a just the category name, without any additional text or explanation.
-
-If you're unsure, return "other". Do not extract details or guess.
-`;
 
 export default async function getOpenAIResponse(request: string, userRequestDetails: UserRequestDetails) {
+    const validControllerCategories: string[] = ['weather', 'youtube', 'tasks/todo', 'calendar', 'other'];
+
     const session = await auth();
     if (!session)
         return {outputText: `You need to be signed in to make a request.`}
@@ -30,13 +19,13 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
     if (!userEmail) {
         return {outputText: `You need to be signed in to make a request.`}
     }
-
+    
     let requestCategoryResponse
     try {
             requestCategoryResponse = await openAIClient.responses.create({
             model: 'gpt-4.1-nano',
             input: [
-                {role: 'system', content: systemMessage},
+                {role: 'system', content: createSystemMessage(validControllerCategories)},
                 {role: 'user', content: request},
             ],
         });
@@ -46,7 +35,10 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
         return {outputText: `Sorry, I ran into a problem while trying to process your request.`}
     }
 
-    const requestCategory = requestCategoryResponse.output_text;
+    let requestCategory = requestCategoryResponse.output_text;
+    if (!validControllerCategories.includes(requestCategory)) {
+        requestCategory = 'other';
+    }
 
     const previousMessages = await prisma.message.findMany({
         where: {
@@ -98,4 +90,14 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
     });
 
     return controllerResponse;
+}
+
+function createSystemMessage(validControllerCategories: string[]) {
+    return `You are a voice assistant. Classify the user's request into one of these categories:
+
+- ${validControllerCategories.join('\n- ')}
+
+Respond with a just the category name, without any additional text or explanation.
+
+If you're unsure, return "other". Do not extract details or guess.`;
 }
