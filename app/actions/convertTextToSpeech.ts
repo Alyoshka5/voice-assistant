@@ -21,7 +21,12 @@ export default async function convertToSpeech(text: string) {
         },
     };
 
-    const [response] = await client.synthesizeSpeech(request);
+    let response;
+    try {
+        [response] = await client.synthesizeSpeech(request);
+    } catch {
+        return null;
+    }
 
     if (response.audioContent) {
         return Buffer.from(response.audioContent).toString('base64');
