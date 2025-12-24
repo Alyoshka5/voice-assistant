@@ -26,13 +26,21 @@ export default async function getOpenAIResponse(request: string, userRequestDeta
     const userEmail = session?.user?.email;
     if (!userEmail) return '';
 
-    const requestCategoryResponse = await openAIClient.responses.create({
-        model: 'gpt-4.1-nano',
-        input: [
-            {role: 'system', content: systemMessage},
-            {role: 'user', content: request},
-        ],
-    });
+
+    let requestCategoryResponse
+    try {
+            requestCategoryResponse = await openAIClient.responses.create({
+            model: 'gpt-4.1-nano',
+            input: [
+                {role: 'system', content: systemMessage},
+                {role: 'user', content: request},
+            ],
+        });
+        if (requestCategoryResponse.error)
+            throw new Error(requestCategoryResponse.error.message);
+    } catch (error) {
+        return {outputText: `Sorry, I ran into a problem while trying to process your request.`}
+    }
 
     const requestCategory = requestCategoryResponse.output_text;
 
