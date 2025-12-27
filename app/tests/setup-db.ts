@@ -1,6 +1,7 @@
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { execSync } from 'child_process';
 import { beforeAll, afterAll } from 'vitest';
+import { server } from './mocks/server';
 
 let container: any;
 
@@ -17,10 +18,18 @@ beforeAll(async () => {
     process.env.DIRECT_URL = dbUrl;
 
     execSync('npx prisma db push', { env: process.env });
+
+    server.listen({ onUnhandledRequest: 'warn' });
 }, 60000);
+
+afterEach(() => {
+    server.resetHandlers();
+})
 
 afterAll(async () => {
     if (container) {
         await container.stop()
     }
+
+    server.close();
 })
