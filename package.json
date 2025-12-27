@@ -9,6 +9,10 @@
         "lint": "next lint",
         "test": "vitest",
         "test:ui": "vitest --ui",
+        "test:unit": "vitest --project unit",
+        "test:unit-ui": "vitest --ui --project unit",
+        "test:int": "vitest --project integration",
+        "test:int-ui": "vitest --ui --project integration",
         "vercel-build": "prisma generate && next build"
     },
     "dependencies": {

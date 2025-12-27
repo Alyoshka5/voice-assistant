@@ -21,8 +21,8 @@
         "paths": {
             "@/*": ["./*"]
         },
-        "types": ["vitest/globals"],
+        "types": ["vitest/globals", "node"],
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "vitest.config.mts"],
     "exclude": ["node_modules"]
 }
