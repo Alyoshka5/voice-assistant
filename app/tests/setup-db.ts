@@ -6,6 +6,17 @@ beforeAll(async () => {
     execSync('npx prisma db push', { env: process.env });
 
     server.listen({ onUnhandledRequest: 'warn' });
+
+    vi.mock('@/auth', () => ({
+        auth: vi.fn(async () => ({
+            user: {
+                id: 'test-user-id',
+                email: 'test@example.com',
+                name: 'Test User'
+                },
+            })
+        ),
+    }));
 }, 60000);
 
 afterEach(() => {
