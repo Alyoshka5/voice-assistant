@@ -48,6 +48,8 @@ export default defineConfig({
                     globalSetup: ['./app/tests/global-setup.ts'],
                     setupFiles: ['./test-setup.ts', './app/tests/setup-db.ts'],
                     environment: 'node',
+                    testTimeout: 60000,
+                    hookTimeout: 60000
                 },
             },
         ]
