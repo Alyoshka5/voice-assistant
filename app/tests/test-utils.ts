@@ -13,8 +13,8 @@ export async function clearDatabase() {
 }
 
 export async function resetDatabaseWithUser() {
-    clearDatabase();
-    
+    await clearDatabase();
+
     await prisma.user.create({
         data: {
             name: 'Test User Name',
