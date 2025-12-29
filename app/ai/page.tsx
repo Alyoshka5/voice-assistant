@@ -170,10 +170,15 @@ export default function Assistant() {
                     <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={userIsSpeakingRef} />
                 </div>
 
-                <div className={styles.conversation_content}>
-                    <ConversationInfo assistantActivated={assistantActivated} displayText={displayText} assistantResponseText={assistantResponseText} displayPanel={displayPanel} />
-                    <QueryForm assistantActivated={assistantActivated} handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} />
-                </div>
+                {
+                    assistantActivated ?
+                        <div className={styles.conversation_content}>
+                            <ConversationInfo displayText={displayText} assistantResponseText={assistantResponseText} displayPanel={displayPanel} />
+                            <QueryForm handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} />
+                        </div>
+                    :
+                        ''
+                }
             </div>
         </div>
     )

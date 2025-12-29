@@ -9,7 +9,6 @@ describe('QueryForm', () => {
         const mockSetState = vi.fn();
 
         render(<QueryForm
-            assistantActivated={true}
             handleQueryFormSubmit={mockFormHandler}
             formInputValue=''
             setFormInputValue={mockSetState}
@@ -18,27 +17,12 @@ describe('QueryForm', () => {
         expect(screen.getByRole('form')).toBeInTheDocument();
     })
 
-    it('does not render form when assistant is not activated', () => {
-        const mockFormHandler = vi.fn();
-        const mockSetState = vi.fn();
-
-        render(<QueryForm
-            assistantActivated={false}
-            handleQueryFormSubmit={mockFormHandler}
-            formInputValue=''
-            setFormInputValue={mockSetState}
-        />);
-
-        expect(screen.queryByRole('form')).not.toBeInTheDocument();
-    })
-
     it('calls setFormInputValue with correct data when user types', async () => {
         const mockFormHandler = vi.fn();
         const mockSetState = vi.fn();
         const user = userEvent.setup();
 
         render(<QueryForm
-            assistantActivated={true}
             handleQueryFormSubmit={mockFormHandler}
             formInputValue=''
             setFormInputValue={mockSetState}
@@ -58,7 +42,6 @@ describe('QueryForm', () => {
             const [val, setVal] = React.useState('');
             return (
                 <QueryForm 
-                    assistantActivated={true} 
                     handleQueryFormSubmit={mockFormHandler} 
                     formInputValue={val} 
                     setFormInputValue={setVal} 
@@ -80,7 +63,6 @@ describe('QueryForm', () => {
         const user = userEvent.setup();
     
         render(<QueryForm
-            assistantActivated={true}
             handleQueryFormSubmit={mockFormHandler}
             formInputValue=''
             setFormInputValue={mockSetState}
@@ -98,7 +80,6 @@ describe('QueryForm', () => {
         const user = userEvent.setup();
     
         render(<QueryForm
-            assistantActivated={true}
             handleQueryFormSubmit={mockFormHandler}
             formInputValue=''
             setFormInputValue={mockSetState}
