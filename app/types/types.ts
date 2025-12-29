@@ -23,7 +23,7 @@ export type UserRequestDetails = {
     timeZone: string;
 }
 
-type ServerResponseObject = {
+export type ServerResponseObject = {
     outputText: string;
     databaseText?: string;
     action?: string;

@@ -5,10 +5,10 @@ import prisma from "@/app/lib/db";
 import { auth } from "@/auth";
 import { Role } from "@prisma/client";
 import categoryControllers from "./categoryFunctions/controllerExporter";
-import { UserRequestDetails } from "../types/types";
+import { UserRequestDetails, ServerResponseObject } from "../types/types";
 
 
-export default async function getOpenAIResponse(request: string, userRequestDetails: UserRequestDetails) {
+export default async function getOpenAIResponse(request: string, userRequestDetails: UserRequestDetails): Promise<ServerResponseObject> {
     const validControllerCategories: string[] = ['weather', 'youtube', 'tasks/todo', 'calendar', 'other'];
 
     const session = await auth();

@@ -53,7 +53,7 @@ export default function Assistant() {
             timeZone: userTimeZone
         });
 
-        if (output !== null && output !== '') {
+        if (output !== null) {
             const outputText = output.outputText.trim().replaceAll('&quot;', '"');
             setAssistantResponseText(outputText);
             setUserQuery('');
