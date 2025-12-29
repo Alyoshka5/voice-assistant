@@ -18,6 +18,7 @@ export const handlers = [
             if (userMessage.includes('task')) category = 'tasks/todo';
             if (userMessage.includes('event') || userMessage.includes('calendar')) category = 'calendar';
             if (userMessage.includes('weather')) category = 'weather';
+            if (userMessage.includes('video') || userMessage.includes('youtube')) category = 'youtube';
 
             return createOpenAIResponse(category);
         }
@@ -96,6 +97,20 @@ export const handlers = [
                         year: 2025
                     }
                 });
+        }
+        
+        // youtube category
+        if (systemMessage.includes('requested playlist name'))
+            return createOpenAIResponse('cooking-playlist-id');
+
+        switch (userMessage) {
+            case 'add the video to my cooking playlist':
+                return createFunctionCallResponse('addVideoToPlaylist', {
+                    youtubeLink: 'https://www.youtube.com/watch?v=video-id',
+                    playlistName: 'cooking'
+                });
+            case 'find a video on how to fry eggs':
+                return createFunctionCallResponse('findYoutubeVideo', { videoQuery: 'frying eggs tutorial' });
         }
                 
         return createOpenAIResponse('');
