@@ -13,8 +13,8 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body className={`${primaryFont.className}`}>
+		<html lang="en" suppressHydrationWarning>
+			<body className={`${primaryFont.className}`} suppressHydrationWarning>
 				{children}
 			</body>
 		</html>
