@@ -17,6 +17,7 @@ export const handlers = [
 
             if (userMessage.includes('task')) category = 'tasks/todo';
             if (userMessage.includes('event') || userMessage.includes('calendar')) category = 'calendar';
+            if (userMessage.includes('weather')) category = 'weather';
 
             return createOpenAIResponse(category);
         }
@@ -75,6 +76,26 @@ export const handlers = [
                 });
             case 'what time is my primary calendar\'s dinner event at':
                 return createFunctionCallResponse('getEventInformation', { calendarName: 'primary', eventName: 'dinner' });
+        }
+        
+        // weather category
+        if (systemMessage.includes('"temperature":{"degrees":20}')) // for getCurrentWeather function
+            return createOpenAIResponse('It is currently cloudy with a temperature of 20 degrees');
+            
+        if (systemMessage.includes('"maxtemperature":{"degrees":25}')) // for getFutureWeatherForecast function
+            return createOpenAIResponse('Tomorrow it is sunny with a high of 25 degrees');
+
+        switch (userMessage) {
+            case 'what\'s the weather?':
+                return createFunctionCallResponse('getCurrentWeather', {});
+            case 'what\'s the weather tomorrow?':
+                return createFunctionCallResponse('getFutureWeatherForecast', {
+                    date: {
+                        day: 20,
+                        month: 12,
+                        year: 2025
+                    }
+                });
         }
                 
         return createOpenAIResponse('');
