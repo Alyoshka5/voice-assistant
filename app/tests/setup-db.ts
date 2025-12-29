@@ -9,12 +9,13 @@ beforeAll(async () => {
 
     vi.mock('@/auth', () => ({
         auth: vi.fn(async () => ({
-            user: {
-                id: 'test-user-id',
-                email: 'test@example.com',
-                name: 'Test User'
+                user: {
+                    id: 'test-user-id',
+                    email: 'test@example.com',
+                    name: 'Test User'
                 },
-            })
+                accessToken: 'test-access-token'
+            }),
         ),
     }));
 }, 60000);
