@@ -16,6 +16,8 @@ export const handlers = [
             let category = 'other';
 
             if (userMessage.includes('task')) category = 'tasks/todo';
+            if (userMessage.includes('event') || userMessage.includes('calendar')) category = 'calendar';
+
             return createOpenAIResponse(category);
         }
         
@@ -49,7 +51,32 @@ export const handlers = [
                     dueDate: { day: 20, month: 12, year: 2025 }
                 });
         }
+            
+        // calendar category
+        if (systemMessage.includes('requested calendar name'))
+            return createOpenAIResponse('primary-calendar-id');
+        
+        if (systemMessage.includes('requested event name'))
+            return createOpenAIResponse('dinner-event-id');
 
+        if (systemMessage.includes('dinner event description')) // for getEventInformation function
+            return createOpenAIResponse('Your dinner event is at 3:00 pm');
+        
+        switch (userMessage) {
+            case 'what events do i have in my primary calendar?':
+                return createFunctionCallResponse('getEventsFromCalendar', { calendarName: 'primary' });
+            case 'add a lunch event to my primary calendar for tomorrow at 1pm that lasts one hour':
+                return createFunctionCallResponse('addEventToCalendar', {
+                    calendarName: 'primary',
+                    eventName: 'lunch',
+                    relativeDate: 'tomorrow',
+                    relativeTime: '1pm',
+                    duration: '1 hour'
+                });
+            case 'what time is my primary calendar\'s dinner event at':
+                return createFunctionCallResponse('getEventInformation', { calendarName: 'primary', eventName: 'dinner' });
+        }
+                
         return createOpenAIResponse('');
     }),
 ]
@@ -87,8 +114,6 @@ function createFunctionCallResponse(functionName: string, args: Object) {
             {
                 type: "function_call",
                 id: "item_123",
-                // status: "completed",
-                // role: "assistant",
                 name: functionName,
                 arguments: JSON.stringify(args)
             }
