@@ -3,7 +3,7 @@ import { CurrentWeatherDetails } from "@/app/types/types";
 
 export default function CurrentWeatherPanel({ details }: { details: CurrentWeatherDetails}) {
     return (
-        <div className={styles.panel}>
+        <div className={styles.panel} data-testid='current-weather-panel'>
             <img src={`${details.weatherIcon}.png`} className={styles.icon} alt="Weather Icon"  />
             <div className={styles.primary_info}>
                 <p className={styles.temperature}>{details.temperature}°</p>
@@ -12,7 +12,7 @@ export default function CurrentWeatherPanel({ details }: { details: CurrentWeath
             <div className={styles.secondary_info}>
                 <p>Feels Like: {details.feelsLike}°</p>
                 <p>Precipitation: {details.precipitation}%</p>
-                <p>Wind Speed: {details.windSpeed} m/s</p>
+                <p>Wind Speed: {details.windSpeed} km/h</p>
             </div>
         </div>
     );
