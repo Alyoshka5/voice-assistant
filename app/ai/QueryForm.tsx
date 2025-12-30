@@ -21,7 +21,7 @@ export default function QueryForm({ handleQueryFormSubmit, formInputValue, setFo
                 autoComplete="off"
                 onChange={(e) => setFormInputValue(e.target.value)}
                 />
-            <button type="submit"><Icon path={mdiSend} size={1} color="#9f9fcd"/></button>
+            <button type="submit" aria-label='Submit Query'><Icon path={mdiSend} size={1} color="#9f9fcd"/></button>
         </form>
     )
 }

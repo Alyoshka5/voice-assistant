@@ -172,7 +172,7 @@ export default function Assistant() {
 
                 {
                     assistantActivated ?
-                        <div className={styles.conversation_content}>
+                        <div className={styles.conversation_content} data-testid='conversation-content'>
                             <ConversationInfo displayText={displayText} assistantResponseText={assistantResponseText} displayPanel={displayPanel} />
                             <QueryForm handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} />
                         </div>

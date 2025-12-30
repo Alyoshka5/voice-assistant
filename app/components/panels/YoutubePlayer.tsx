@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player';
 export default function YoutubePlayer({ videoId }: { videoId: string }) {
     return (
         <div className={styles.player_container}>
-            <div className={styles.player_wrapper}>
+            <div className={styles.player_wrapper} data-testid='player-wrapper'>
                 <ReactPlayer
                     src={`https://www.youtube.com/watch?v=${videoId}`}
                     width="100%"

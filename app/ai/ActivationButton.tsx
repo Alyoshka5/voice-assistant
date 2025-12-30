@@ -16,7 +16,7 @@ export default function ActivationButton({ assistantActivated, setAssistantActiv
             { assistantActivated ?
                 ''
             :
-                <button className={`${styles.menu_button} ${styles.activate_button}`} onClick={() => {
+                <button className={`${styles.menu_button} ${styles.activate_button}`} aria-label='Activate Assistant' onClick={() => {
                     setAssistantActivated(true);
                     initAudio();
                 }}>

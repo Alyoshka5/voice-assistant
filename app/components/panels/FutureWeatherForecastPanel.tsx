@@ -13,7 +13,7 @@ export default function FutureWeatherForecastPanel({ details }: { details: Futur
 
 
     return (
-        <div className={styles.panel}>
+        <div className={styles.panel} data-testid='future-weather-forecast-panel'>
             <img src={`${details.weatherIcon}.png`} className={styles.icon} alt="Weather Icon"  />
             <div className={styles.primary_info}>
                 <p className={styles.week_day}>{weekDay}</p>
