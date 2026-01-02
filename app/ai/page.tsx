@@ -22,6 +22,7 @@ export default function Assistant() {
     const [assistantResponseText, setAssistantResponseText] = useState<string>('');
     const [currentCoords, setCurrentCoords] = useState<{ latitude: number, longitude: number } | null>(null);
     const [userQuery, setUserQuery] = useState<string>('');
+    const queryRef = useRef<string>('');
     const [formInputValue, setFormInputValue] = useState<string>('');
     const ignoreSpeechRef = useRef<boolean>(false);
     const [wakeWordCalled, setWakeWordCalled] = useState<boolean>(false);
@@ -126,10 +127,13 @@ export default function Assistant() {
         if (!ignoreSpeechRef.current) {
             if (keyIndex >= 0) {
                 userIsSpeakingRef.current = true; 
-                setUserQuery(text.substring(keyIndex + assistantName.length + 1, text.length));
+                const query = text.substring(keyIndex + assistantName.length + 1, text.length);
+                queryRef.current = query;
+                setUserQuery(query);
             }
             else if (wakeWordCalled) {
                 userIsSpeakingRef.current = true;
+                queryRef.current = text;
                 setUserQuery(text);
             }
         }
@@ -137,7 +141,7 @@ export default function Assistant() {
 
     useEffect(() => {
         if (!isFinal) return;
-        if (userQuery.trim() === '') { // assistant called without query
+        if (queryRef.current.trim() === '') { // assistant called without query
             const keyIndex = text.toLowerCase().indexOf(assistantName);
             if (keyIndex >= 0) // no wake word detected
                 setWakeWordCalled(true); // listen to query in the next line
@@ -149,7 +153,7 @@ export default function Assistant() {
 
         if (userIsSpeakingRef.current && !ignoreSpeechRef.current) {
             userIsSpeakingRef.current = false;
-            getAssistantResponse(userQuery);
+            getAssistantResponse(queryRef.current);
         }
     }, [isFinal]);
 
