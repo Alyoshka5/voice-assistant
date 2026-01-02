@@ -8,6 +8,7 @@ export const handlers = [
         if (typeof body?.input === 'string') {
             systemMessage = body.input.toLowerCase();
         } else {
+            body.input.reverse();
             systemMessage = body?.input?.find((message: any) => message.role === 'system')?.content.toLowerCase() || '';
             userMessage = body?.input?.find((message: any) => message.role === 'user')?.content.toLowerCase() || '';
         }
