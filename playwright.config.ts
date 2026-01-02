@@ -82,7 +82,9 @@ export default defineConfig({
     webServer: {
         command: 'npm run dev',
         url: 'http://localhost:3000',
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: false,
+        stdout: 'pipe',
+        stderr: 'pipe',
 		env: {
 			APP_ENV: 'test',
 			NEXT_PUBLIC_APP_ENV: 'test'
