@@ -87,7 +87,8 @@ export default defineConfig({
         stderr: 'pipe',
 		env: {
 			APP_ENV: 'test',
-			NEXT_PUBLIC_APP_ENV: 'test'
+			NEXT_PUBLIC_APP_ENV: 'test',
+            DATABASE_URL: process.env.DATABASE_URL!
 		}
     },
 });

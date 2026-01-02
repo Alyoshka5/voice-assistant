@@ -42,7 +42,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: providers,
     callbacks: {
         async signIn({ profile, account }) {
-            if (account?.provider === 'credentials') return true;
+            if (account?.provider === 'credentials') {
+                const existingUser = await prisma.user.findUnique({
+                    where: { email: 'test@example.com'}
+                })
+
+                if (!existingUser) {
+                    await prisma.user.create({
+                        data: {
+                            name: 'Test User',
+                            email: 'test@example.com',
+                        },
+                    })
+                }
+
+                return true;
+            }
 
             if (!profile) return false;
 
