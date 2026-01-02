@@ -3,9 +3,10 @@ import Google from 'next-auth/providers/google'
 import prisma from '@/app/lib/db'
 import { AuthToken } from "@/app/types/types"
 import { encrypt , decrypt } from '@/app/lib/encryption'
+import Credentials from "next-auth/providers/credentials"
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-    providers: [Google({
+const providers = [
+    Google({
         clientId: process.env.AUTH_GOOGLE_ID,
         clientSecret: process.env.AUTH_GOOGLE_SECRET,
         authorization: {
@@ -14,9 +15,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 access_type: 'offline',
             }
         }
-    })],
+    }),
+    ...(process.env.APP_ENV === 'test' ? [Credentials({
+        name: 'Test Login',
+        credentials: {
+            username: {
+                label: 'Username',
+                type: 'text'
+
+            }
+        },
+        authorize: async (credendials) => {
+            if (credendials.username === 'testuser') {
+                return {
+                    id: 'test-user-id',
+                    name: 'Test User',
+                    email: 'test@example.com'
+                }
+            }
+            return null;
+        }
+    })] : [])
+]
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+    providers: providers,
     callbacks: {
-        async signIn({ profile }) {
+        async signIn({ profile, account }) {
+            if (account?.provider === 'credentials') return true;
+
             if (!profile) return false;
 
             const existingUser = await prisma.user.findUnique({
@@ -35,9 +62,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return true;
         },
         async jwt({ token, account }) {
+            if (account?.provider === 'credentials') {
+                return {
+                    ...token,
+                    accessToken: 'mock-access-token',
+                    refreshToken: 'mock-refresh-token',
+                    accessTokenExpires: Date.now() + 1000000
+                }
+            }
+
             let refreshToken;
             if (account) {
-                if (account.refresh_token) {
+                if (account.provider === 'google' && account.refresh_token) {
                     refreshToken = account.refresh_token;
 
                     const encrypted = await encrypt(refreshToken);

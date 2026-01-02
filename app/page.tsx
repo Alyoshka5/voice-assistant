@@ -1,3 +1,4 @@
+import TestCredentialsForm from "./components/TestCredentialsForm";
 import primaryFont from "./fonts";
 import googleSignIn from "@/app/actions/google-signin";
 
@@ -9,6 +10,9 @@ export default function Home() {
                 <p>Get started:</p>
                 <button type="submit" className={`${primaryFont.className}`}>Sign in with Google</button>
             </form>
+            {process.env.APP_ENV === 'test' && (
+                <TestCredentialsForm />
+            )}
         </div>
     );
 }
