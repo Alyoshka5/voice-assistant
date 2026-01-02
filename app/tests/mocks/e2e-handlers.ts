@@ -3,9 +3,6 @@ import { http, HttpResponse } from 'msw';
 
 export const e2eHandlers = [
     ...handlers,
-    http.get('http://localhost:3000/__msw_status', () => {
-        return HttpResponse.json({ status: 'ready' });
-    }),
     http.get(/https:\/\/weather.googleapis.com\/v1\/currentConditions:lookup/, async () => {
         return HttpResponse.json({
             temperature: { degrees: 20 },

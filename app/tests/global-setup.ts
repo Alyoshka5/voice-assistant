@@ -20,21 +20,6 @@ export default async function setup() {
 
     (globalThis as any).__CONTAINER__ = container;
 
-    let ready = false;
-    for (let i = 0; i < 20; i++) {
-        try {
-            const res = await fetch('http://localhost:3000/__msw_status');
-            if (res.ok) {
-                ready = true;
-                break;
-            }
-        } catch (e) {
-            // Server not up yet
-        }
-        await new Promise(r => setTimeout(r, 500));
-    }
-    if (!ready) throw new Error("MSW failed to start in time");
-
     return async () => {
         await container.stop();
     }
