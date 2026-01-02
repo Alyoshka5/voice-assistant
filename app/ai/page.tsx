@@ -30,6 +30,8 @@ export default function Assistant() {
     const [displayPanel, setDisplayPanel] = useState<ReactElement>(<></>);
     const userIsSpeakingRef = useRef<boolean>(false);
 
+    const [isMounted, setIsMounted] = useState(false);
+
     const { getResponse } = useOpenAI();
     const { initAudio, playSpeech, getAmplitude } = usePlaySpeech();
 
@@ -158,8 +160,12 @@ export default function Assistant() {
         setDisplayText(userQuery);
     }, [userQuery]);
 
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     return (
-        <div className={styles.page}>
+        <div className={styles.page} data-mounted={isMounted}>
             <div className={styles.menu_bar}>
                 <ActivationButton assistantActivated={assistantActivated} setAssistantActivated={setAssistantActivated} initAudio={initAudio} />
                 <SignOutButton />
