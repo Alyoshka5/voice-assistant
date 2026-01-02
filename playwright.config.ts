@@ -84,7 +84,8 @@ export default defineConfig({
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
 		env: {
-			APP_ENV: 'test'
+			APP_ENV: 'test',
+			NEXT_PUBLIC_APP_ENV: 'test'
 		}
     },
 });

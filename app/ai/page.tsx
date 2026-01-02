@@ -167,7 +167,9 @@ export default function Assistant() {
 
             <div className={styles.assistant}>
                 <div className={styles.particle_container}>
-                    <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={userIsSpeakingRef} />
+                    {process.env.NEXT_PUBLIC_APP_ENV === 'test' ? <h2 style={{color: 'white'}} data-testid='mock-orb'>MOCK PARTICLE ORB</h2> :
+                        <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={userIsSpeakingRef} />
+                    }
                 </div>
 
                 {
