@@ -59,6 +59,7 @@ export default function Assistant() {
         if (output !== null) {
             const outputText = output.outputText.trim().replaceAll('&quot;', '"');
             setAssistantResponseText(outputText);
+            queryRef.current = '';
             setUserQuery('');
             handleResponseActions(output.action || '', output.details || {});
             playSpeech(outputText);
@@ -95,6 +96,7 @@ export default function Assistant() {
         ignoreSpeechRef.current = true; // ignore any speech input while form is submitted
         userIsSpeakingRef.current = false;
         stopListening(); // will automatically start listening after
+        queryRef.current = formInputValue;
         setUserQuery(formInputValue);
         await getAssistantResponse(formInputValue);
         setTimeout(() => {
