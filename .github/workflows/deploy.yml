@@ -19,6 +19,8 @@ jobs:
         run: npm ci
       - name: Run vitest tests
         run: npm run test
+        env:
+          OPENAI_API_KEY: ${{ vars.OPENAI_API_KEY }}
 
   build-and-push:
     needs: test
