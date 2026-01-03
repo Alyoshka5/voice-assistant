@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
                 <p className={styles.text}>
                 For questions or requests regarding your data, please contact:
                 </p>
-                <p className={styles.contact}>alyoshkamyshko@gmail.com</p>
+                <p className={styles.contact}>contact@apexassistant.app</p>
             </section>
 
             <section className={styles.section}>
