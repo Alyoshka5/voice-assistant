@@ -19,6 +19,8 @@ ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 RUN npx prisma generate
 
+ENV DATABASE_URL="postgresql://mock:mock@localhost:5432/mock"
+
 RUN npm run build
 
 # 4. Production Image
