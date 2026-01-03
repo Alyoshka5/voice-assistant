@@ -127,14 +127,16 @@ export default function Assistant() {
         if (!ignoreSpeechRef.current) {
             if (keyIndex >= 0) {
                 userIsSpeakingRef.current = true; 
-                const query = text.substring(keyIndex + assistantName.length + 1, text.length);
+                let query = text.substring(keyIndex + assistantName.length + 1, text.length);
+                query = query.charAt(0).toUpperCase() + query.slice(1);
                 queryRef.current = query;
                 setUserQuery(query);
             }
             else if (wakeWordCalled) {
                 userIsSpeakingRef.current = true;
-                queryRef.current = text;
-                setUserQuery(text);
+                let query = text.charAt(0).toUpperCase() + text.slice(1);
+                queryRef.current = query;
+                setUserQuery(query);
             }
         }
     }, [text]);
