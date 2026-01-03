@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/ai', request.url));
     }
 
-    const isProtectedRoute = pathname !== '/' && !pathname.startsWith('/api');
+    const isProtectedRoute = pathname !== '/' && pathname !== '/privacy' && !pathname.startsWith('/api');
     if (isProtectedRoute && !session?.user) {
         return NextResponse.redirect(new URL('/', request.url));
     }
