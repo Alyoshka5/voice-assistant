@@ -1,0 +1,115 @@
+.content_container {
+    padding: 4rem 7rem;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+}
+
+.header_container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+}
+
+.header {
+    font-size: 4rem;
+    padding: 0;
+    margin: 0;
+    color: #9f9fcd;
+}
+
+.subheader {
+    font-size: 1.5rem;
+    width: 80%;
+    padding: 0;
+    margin: 0.5rem 0;
+}
+
+.orb_outer_container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.orb_inner_container:hover {
+    cursor: pointer;
+}
+
+.sign_in_container {
+    margin: 2rem 0;
+}
+
+.sign_in_button {
+    color: #ffffff;
+    display: flex;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    border: none;
+    border-radius: 1rem;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+}
+
+.sign_in_button:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+@media only screen and (max-width: 1024px) {
+    .content_container {
+        padding: 6rem 4rem;
+        margin-bottom: 0;
+    }
+
+    .header {
+        font-size: 3rem;
+    }
+
+    .subheader {
+        font-size: 1.2rem;
+    }
+
+    .page_sign_in_button {
+        padding: 0.9rem 1.5rem;
+    }
+
+    .nav_sign_in_button {
+        padding: 0.7rem 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .content_container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 6rem 1.5rem;
+        min-height: auto;
+    }
+
+    .header_container {
+        width: 90%;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .header {
+        font-size: 2.5rem;
+    }
+
+    .subheader {
+        width: 100%;
+        font-size: 1.2rem;
+    }
+
+    .sign_in_container {
+        display: flex;
+        justify-content: center;
+    }
+}

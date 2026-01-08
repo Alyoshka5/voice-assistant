@@ -3,12 +3,15 @@
 import React, { RefObject, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAmplitude: () => number, userIsSpeakingRef: RefObject<boolean> }) {
+export default function ParticleOrb({ getAmplitude, userIsSpeakingRef, canvasSize = 400 }: 
+    { getAmplitude: () => number, userIsSpeakingRef: RefObject<boolean>, canvasSize?: number }) 
+    {
     const mountRef = useRef<HTMLDivElement>(null);
+    let animationFrameId: number;
 
     useEffect(() => {
-        const canvasWidth = 400;
-        const canvasHeight = 400;
+        const canvasWidth = canvasSize;
+        const canvasHeight = canvasSize;
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera(75, canvasWidth / canvasHeight, 0.1, 1000);
@@ -17,7 +20,10 @@ export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAm
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(canvasWidth, canvasHeight);
         renderer.setClearColor(0x0a0124);
-        mountRef.current?.appendChild(renderer.domElement);
+        if (mountRef.current) {
+            mountRef.current.innerHTML = '';
+            mountRef.current.appendChild(renderer.domElement);
+        }
 
         const particleCount = 2000;
         const basePositions: number[] = [];
@@ -74,7 +80,7 @@ export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAm
         let currentColor = new THREE.Color(0xffffff);
 
         const animate = () => {
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
             const targetSpeed = userIsSpeakingRef.current ? 0.08 : 0.01;
             timeSpeed = THREE.MathUtils.lerp(timeSpeed, targetSpeed, 0.1);
             time += timeSpeed;
@@ -110,15 +116,24 @@ export default function ParticleOrb({ getAmplitude, userIsSpeakingRef }: { getAm
 
             positionAttr.needsUpdate = true;
             renderer.render(scene, camera);
-        };
 
+        };
+        
         animate();
-
+        
         return () => {
-            mountRef.current?.removeChild(renderer.domElement);
+            cancelAnimationFrame(animationFrameId);
+            
             renderer.dispose();
+            particleGeometry.dispose();
+            particleMaterial.dispose();
+            texture.dispose();
+
+            if (mountRef.current) {
+                mountRef.current.innerHTML = '';
+            }
         };
-    }, []);
+    }, [canvasSize]);
 
     return <div ref={mountRef} />;
 }
