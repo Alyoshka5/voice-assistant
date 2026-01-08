@@ -73,7 +73,7 @@ export default function Hero() {
                     onMouseLeave={() => signUpHoverRef.current = false}
                     onClick={scrollToFeaturesSection}
                 >
-                    {screenWidth > 0 && (
+                    {screenWidth > 0 && process.env.NEXT_PUBLIC_APP_ENV === 'test' ? <h2 style={{color: 'white'}} data-testid='mock-orb'>MOCK PARTICLE ORB</h2> : (
                         <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={signUpHoverRef} canvasSize={ screenWidth > 800 ? 500 : 300 } />
                     )}
                 </div>
