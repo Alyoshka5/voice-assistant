@@ -1,18 +1,18 @@
-import TestCredentialsForm from "./components/TestCredentialsForm";
-import primaryFont from "./fonts";
-import googleSignIn from "@/app/actions/google-signin";
+'use client'
+
+import styles from './page.module.css';
+import FAQ from "./components/landingPage/FAQ";
+import Features from "./components/landingPage/Features";
+import Hero from "./components/landingPage/Hero";
+import NavBar from './components/landingPage/NavBar';
 
 export default function Home() {
     return (
-        <div>
-            <h1>Welcome to APEX</h1>
-            <form action={googleSignIn}>
-                <p>Get started:</p>
-                <button type="submit" className={`${primaryFont.className}`}>Sign in with Google</button>
-            </form>
-            {process.env.APP_ENV === 'test' && (
-                <TestCredentialsForm />
-            )}
+        <div className={styles.container}>
+            <NavBar />
+            <Hero />
+            <Features />
+            <FAQ />
         </div>
     );
 }
