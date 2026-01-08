@@ -28,7 +28,7 @@ describe('Home', () => {
 
         render(<Home />);
         
-        await user.click(screen.getByRole('button', { name: /google/i }));
+        await user.click(screen.getByRole('button', { name: /sign in/i }));
         expect(mockGoogleSignIn).toHaveBeenCalled();
     })
 })
