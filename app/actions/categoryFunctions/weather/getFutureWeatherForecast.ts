@@ -7,7 +7,7 @@ import openAIClient from "@/app/lib/openai";
 
 const systemMessage = `
 You are a friendly voice assistant. Read the weather data and user request, and respond naturally, clearly, and briefly.
-Weather Data: `;
+Weather Data for the specified day: `;
 
 export default async function getWeatherForecast(coordinates: Coordinates, conversation: Conversation, targetDate: DateObject) {
     const session = await auth();
