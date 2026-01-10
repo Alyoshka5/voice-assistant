@@ -10,7 +10,6 @@ import CurrentWeatherPanel from "@/app/components/panels/currentWeatherPanel";
 import FutureWeatherForecastPanel from "../components/panels/FutureWeatherForecastPanel";
 import { CurrentWeatherDetails, FutureWeatherForecastDetails } from "../types/types";
 import ParticleOrb from "@/app/components/ParticleOrb";
-import ActivationButton from './ActivationButton';
 import SignOutButton from '@/app/components/SignOutButton';
 import ConversationInfo from './ConversationInfo';
 import QueryForm from './QueryForm';
@@ -184,12 +183,11 @@ export default function Assistant() {
     return (
         <div className={styles.page} data-mounted={isMounted}>
             <div className={styles.menu_bar}>
-                <ActivationButton assistantActivated={assistantActivated} setAssistantActivated={setAssistantActivated} initAudio={initAudio} />
                 <SignOutButton />
             </div>
 
             <div className={styles.assistant}>
-                <div className={`${styles.particle_container} ${!assistantActivated ? styles.active_particle_container : ''}`}
+                <div className={`${styles.particle_container} ${!assistantActivated ? styles.active_particle_container : ''}`} aria-label='Particle Orb'
                     onClick={() => {
                         if (!assistantActivated) {
                             setAssistantActivated(true);

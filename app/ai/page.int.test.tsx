@@ -77,10 +77,9 @@ describe('Assistant', () => {
         vi.clearAllMocks();
     })
 
-    it('renders particle orb and menu buttons before activation', () => {
+    it('renders particle orb and sign out button before activation', () => {
         render(<Assistant />);
 
-        expect(screen.getByRole('button', { name: 'Activate Assistant' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
         expect(screen.getByTestId('mock-orb')).toBeInTheDocument();
     })
@@ -105,7 +104,7 @@ describe('Assistant', () => {
 
         render(<Assistant />);
 
-        await user.click(screen.getByRole('button', { name: 'Activate Assistant' }));
+        await user.click(screen.getByLabelText('Particle Orb'));
         expect(screen.getByTestId('conversation-content')).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toBeInTheDocument();
         expect(mockStartListening).toHaveBeenCalled();
@@ -122,7 +121,7 @@ describe('Assistant', () => {
 
         render(<Assistant />);
 
-        await user.click(screen.getByRole('button', { name: 'Activate Assistant' }));
+        await user.click(screen.getByLabelText('Particle Orb'));
         await user.type(screen.getByRole('textbox'), userMessage);
         await user.click(screen.getByRole('button', { name: 'Submit Query' }));
         expect(mockGetResponse).toHaveBeenCalledWith(
@@ -184,7 +183,7 @@ describe('Assistant', () => {
 
         render(<Assistant />);
 
-        await user.click(screen.getByRole('button', { name: 'Activate Assistant' }));
+        await user.click(screen.getByLabelText('Particle Orb'));
         await user.type(screen.getByRole('textbox'), 'Find a video on how to fry eggs');
         await user.click(screen.getByRole('button', { name: 'Submit Query' }));
         await waitFor(() => {
@@ -209,7 +208,7 @@ describe('Assistant', () => {
 
         render(<Assistant />);
 
-        await user.click(screen.getByRole('button', { name: 'Activate Assistant' }));
+        await user.click(screen.getByLabelText('Particle Orb'));
         await user.type(screen.getByRole('textbox'), 'What\' the weather?');
         await user.click(screen.getByRole('button', { name: 'Submit Query' }));
         await waitFor(() => {
@@ -235,7 +234,7 @@ describe('Assistant', () => {
 
         render(<Assistant />);
 
-        await user.click(screen.getByRole('button', { name: 'Activate Assistant' }));
+        await user.click(screen.getByLabelText('Particle Orb'));
         await user.type(screen.getByRole('textbox'), 'What\' the weather tomorrow?');
         await user.click(screen.getByRole('button', { name: 'Submit Query' }));
         await waitFor(() => {
