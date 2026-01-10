@@ -49,6 +49,11 @@ export type DateObject = {
     day: number;
 }
 
+export type AssistantResponse = {
+    idx: number;
+    message: string;
+};
+
 export type { Coordinates, ForecastDay, ForecastDetails, CurrentWeatherDetails, FutureWeatherForecastDetails }
 export type { AddVideoToPlaylistDetails, YoutubePlaylist, YoutubePlaylistsList };
 export type { TaskList, TaskDetails, TaskListsList, TaskItem };

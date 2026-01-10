@@ -8,7 +8,7 @@ import usePlaySpeech from "../hooks/usePlaySpeech";
 import YoutubePlayer from "@/app/components/panels/YoutubePlayer";
 import CurrentWeatherPanel from "@/app/components/panels/currentWeatherPanel";
 import FutureWeatherForecastPanel from "../components/panels/FutureWeatherForecastPanel";
-import { CurrentWeatherDetails, FutureWeatherForecastDetails } from "../types/types";
+import { CurrentWeatherDetails, FutureWeatherForecastDetails, AssistantResponse } from "../types/types";
 import ParticleOrb from "@/app/components/ParticleOrb";
 import SignOutButton from '@/app/components/SignOutButton';
 import ConversationInfo from './ConversationInfo';
@@ -19,7 +19,7 @@ const assistantName = 'apex';
 
 export default function Assistant() {
     const {text, isFinal, startListening, stopListening} = useSpeechRecognition();
-    const [assistantResponseText, setAssistantResponseText] = useState<string>('');
+    const [assistantResponseText, setAssistantResponseText] = useState<AssistantResponse>({idx: 0, message: ''});
     const [currentCoords, setCurrentCoords] = useState<{ latitude: number, longitude: number } | null>(null);
     const [userQuery, setUserQuery] = useState<string>('');
     const queryRef = useRef<string>('');
@@ -31,7 +31,8 @@ export default function Assistant() {
     const [displayPanel, setDisplayPanel] = useState<ReactElement>(<></>);
     const userIsSpeakingRef = useRef<boolean>(false);
     const { data: session } = useSession();
-
+    const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+    const hasWelcomed = useRef<boolean>(false);
     const [isMounted, setIsMounted] = useState(false);
 
     const { getResponse } = useOpenAI();
@@ -59,7 +60,7 @@ export default function Assistant() {
 
         if (output !== null) {
             const outputText = output.outputText.trim().replaceAll('&quot;', '"');
-            setAssistantResponseText(outputText);
+            displayResponse(outputText);
             queryRef.current = '';
             setUserQuery('');
             handleResponseActions(output.action || '', output.details || {});
@@ -105,6 +106,32 @@ export default function Assistant() {
         }, 300);
     }
 
+    const displayResponse = (responseMessage: string) => {
+        if (intervalIdRef.current !== null) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+        } 
+        setAssistantResponseText({idx: 0, message: ''});
+        const responseArray = responseMessage.split(' ');
+        let currentIdx = 0;
+
+        intervalIdRef.current = setInterval(() => {
+            if (currentIdx >= responseArray.length) {
+                clearInterval(intervalIdRef.current!);
+                intervalIdRef.current = null;
+                return;
+            }
+
+            const nextWord = responseArray[currentIdx];
+            setAssistantResponseText((prev) => ({
+                idx: currentIdx + 1,
+                message: prev.message + nextWord + ' '
+            }));
+            
+            currentIdx++;
+        }, 50);
+    }
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
             setCurrentCoords({
@@ -116,7 +143,7 @@ export default function Assistant() {
 
     useEffect(() => {
         if (assistantActivated) {
-            setAssistantResponseText('Welcome. Just say \'Apex\' to start. You\'ll see the orb turn blue when I\'m listening for your request.')
+            displayResponse('Welcome. Just say \'Apex\' to start. You\'ll see the orb turn blue when I\'m listening for your request.')
             try {
                 startListening();
             } catch (error) {
@@ -171,8 +198,9 @@ export default function Assistant() {
     }, [userQuery]);
 
     useEffect(() => {
-        if (!assistantActivated && session?.user?.name) {
-            setAssistantResponseText(`Hello, ${session.user.name.split(' ')[0]}. Tap the orb to initialize Apex.`);
+        if (!assistantActivated && session?.user?.name && !hasWelcomed.current) {
+            hasWelcomed.current = true;
+            displayResponse(`Hello, ${session.user.name.split(' ')[0]}. Tap the orb to initialize Apex.`);
         }
     }, [session])
 
@@ -204,7 +232,7 @@ export default function Assistant() {
                 </div>
 
                 <div className={styles.conversation_content} data-testid='conversation-content'>
-                    <ConversationInfo displayText={displayText} assistantResponseText={assistantResponseText} displayPanel={displayPanel} />
+                    <ConversationInfo displayText={displayText} assistantResponseText={assistantResponseText.message} displayPanel={displayPanel} />
                     { assistantActivated && <QueryForm handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} /> }
                 </div>
             </div>
