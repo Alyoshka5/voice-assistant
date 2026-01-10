@@ -53,7 +53,7 @@ export default function Hero() {
                     The AI voice assistant that connects your voice to the Google ecosystem. Reach the apex of your productivity by letting AI manage the manual tasks for you.
                 </p>
                 <div className={styles.sign_in_container}>
-                    <form action={googleSignIn}>
+                    <form action={googleSignIn} suppressHydrationWarning>
                         <button 
                             type="submit" className={`${primaryFont.className} ${styles.sign_in_button} ${styles.page_sign_in_button}`}
                             onMouseEnter={() => signUpHoverRef.current = true}

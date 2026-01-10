@@ -19,7 +19,7 @@ export default function NavBar() {
             <div className={styles.right_side_container}>
                 <a href="#features" className={styles.link}>Features</a>
                 <a href="#faq" className={styles.link}>FAQ</a>
-                <form action={googleSignIn}>
+                <form action={googleSignIn} suppressHydrationWarning>
                     <button type="submit" className={`${primaryFont.className} ${styles.sign_in_button} ${styles.nav_sign_in_button}`}>
                         Sign in
                     </button>
