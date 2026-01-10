@@ -12,7 +12,7 @@ export default function ConversationInfo({ displayText, assistantResponseText, d
     return (
         <div className={styles.conversation_info} >
             <p className={styles.user_query}>{displayText}</p>
-            <p className={styles.assistant_response}>{assistantResponseText}</p>
+            <p className={styles.assistant_response} data-testid='assistant-response'>{assistantResponseText}</p>
             {displayPanel}
         </div>
     )

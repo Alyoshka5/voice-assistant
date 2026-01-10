@@ -94,7 +94,7 @@ describe('Assistant', () => {
     it('displays welcome message on load', async () => {
         render(<Assistant />);
 
-        const welcomeMessage = await screen.findByLabelText('Welcome Message');
+        const welcomeMessage = await screen.findByTestId('assistant-response');
 
         expect(welcomeMessage).toBeInTheDocument();
         expect(welcomeMessage.textContent).toMatch(/firstname/i);
@@ -105,7 +105,6 @@ describe('Assistant', () => {
 
         render(<Assistant />);
 
-        expect(screen.queryByTestId('conversation-content')).not.toBeInTheDocument();
         await user.click(screen.getByRole('button', { name: 'Activate Assistant' }));
         expect(screen.getByTestId('conversation-content')).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toBeInTheDocument();
@@ -144,7 +143,6 @@ describe('Assistant', () => {
         mockGetResponse.mockResolvedValue({
             outputText: assistantMessage
         });
-        const user = userEvent.setup();
 
         const { rerender } = render(<Assistant />);
 
@@ -164,7 +162,6 @@ describe('Assistant', () => {
         });
         rerender(<Assistant />);
 
-        await user.click(screen.getByRole('button', { name: 'Activate Assistant' }));
         await waitFor(() => {
             expect(mockGetResponse).toHaveBeenCalledWith(
                 expect.stringContaining(userMessage),

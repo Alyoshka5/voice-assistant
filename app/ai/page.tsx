@@ -27,11 +27,10 @@ export default function Assistant() {
     const [formInputValue, setFormInputValue] = useState<string>('');
     const ignoreSpeechRef = useRef<boolean>(false);
     const [wakeWordCalled, setWakeWordCalled] = useState<boolean>(false);
-    const [displayText, setDisplayText] = useState<string>('');
+    const [displayText, setDisplayText] = useState<string>('\u00A0');
     const [assistantActivated, setAssistantActivated] = useState<boolean>(false);
     const [displayPanel, setDisplayPanel] = useState<ReactElement>(<></>);
     const userIsSpeakingRef = useRef<boolean>(false);
-    const [userName, setUserName] = useState<string>('');
     const { data: session } = useSession();
 
     const [isMounted, setIsMounted] = useState(false);
@@ -118,6 +117,7 @@ export default function Assistant() {
 
     useEffect(() => {
         if (assistantActivated) {
+            setAssistantResponseText('Welcome. Just say \'Apex\' to start. You\'ll see the orb turn blue when I\'m listening for your request.')
             try {
                 startListening();
             } catch (error) {
@@ -172,8 +172,8 @@ export default function Assistant() {
     }, [userQuery]);
 
     useEffect(() => {
-        if (session?.user?.name) {
-            setUserName(session.user.name.split(' ')[0]);
+        if (!assistantActivated && session?.user?.name) {
+            setAssistantResponseText(`Hello, ${session.user.name.split(' ')[0]}. Tap the orb to initialize Apex.`);
         }
     }, [session])
 
@@ -205,15 +205,10 @@ export default function Assistant() {
                     }
                 </div>
 
-                {
-                    assistantActivated ?
-                        <div className={styles.conversation_content} data-testid='conversation-content'>
-                            <ConversationInfo displayText={displayText} assistantResponseText={assistantResponseText} displayPanel={displayPanel} />
-                            <QueryForm handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} />
-                        </div>
-                    :
-                        userName ? <p className={styles.assistant_response} aria-label='Welcome Message'>Welcome, {userName}. Tap the orb to initialize Apex.</p> : ''
-                }
+                <div className={styles.conversation_content} data-testid='conversation-content'>
+                    <ConversationInfo displayText={displayText} assistantResponseText={assistantResponseText} displayPanel={displayPanel} />
+                    { assistantActivated && <QueryForm handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} /> }
+                </div>
             </div>
         </div>
     )
