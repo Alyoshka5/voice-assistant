@@ -46,6 +46,13 @@ vi.mock('@/app/actions/google-signin', () => ({
     default: mockGoogleSignIn
 }));
 
+vi.mock('next-auth/react', () => ({
+    useSession: () => ({
+        data: { user: { name: 'firstname lastname' } },
+        status: 'authenticated',
+    }),
+}));
+
 // browser APIs
 const mockCoordinates = {
     latitude: 49.2382,
@@ -82,6 +89,15 @@ describe('Assistant', () => {
         render(<Assistant />);
 
         expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled();
+    })
+
+    it('displays welcome message on load', async () => {
+        render(<Assistant />);
+
+        const welcomeMessage = await screen.findByLabelText('Welcome Message');
+
+        expect(welcomeMessage).toBeInTheDocument();
+        expect(welcomeMessage.textContent).toMatch(/firstname/i);
     })
 
     it('activates assistant and renders conversation content when activation button is clicked', async () => {

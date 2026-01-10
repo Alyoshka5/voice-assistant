@@ -42,6 +42,10 @@
     margin: 0 1rem;
 }
 
+.active_particle_container:hover {
+    cursor: pointer;
+}
+
 .welcome_message {
     color: #fff;
 }

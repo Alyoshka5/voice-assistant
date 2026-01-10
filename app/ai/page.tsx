@@ -189,7 +189,17 @@ export default function Assistant() {
             </div>
 
             <div className={styles.assistant}>
-                <div className={styles.particle_container}>
+                <div className={`${styles.particle_container} ${!assistantActivated ? styles.active_particle_container : ''}`}
+                    onClick={() => {
+                        if (!assistantActivated) {
+                            setAssistantActivated(true);
+                            initAudio();
+                            userIsSpeakingRef.current = false;
+                        }
+                    }}
+                    onMouseEnter={() => {if (!assistantActivated) userIsSpeakingRef.current = true}}
+                    onMouseLeave={() => {if (!assistantActivated) userIsSpeakingRef.current = false}}
+                >
                     {process.env.NEXT_PUBLIC_APP_ENV === 'test' ? <h2 style={{color: 'white'}} data-testid='mock-orb'>MOCK PARTICLE ORB</h2> :
                         <ParticleOrb getAmplitude={getAmplitude} userIsSpeakingRef={userIsSpeakingRef} />
                     }
@@ -202,7 +212,7 @@ export default function Assistant() {
                             <QueryForm handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} />
                         </div>
                     :
-                        userName ? <h2 className={styles.welcome_message}>Hello, {userName}. Tap the orb to initialize Apex.</h2> : ''
+                        userName ? <p className={styles.assistant_response} aria-label='Welcome Message'>Welcome, {userName}. Tap the orb to initialize Apex.</p> : ''
                 }
             </div>
         </div>
