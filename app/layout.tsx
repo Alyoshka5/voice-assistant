@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import primaryFont from './fonts';
 import './global.css'
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
 	title: "Apex",
@@ -24,7 +25,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${primaryFont.className}`} suppressHydrationWarning>
-				{children}
+				<SessionProvider>
+					{children}
+				</SessionProvider>
 			</body>
 		</html>
 	);

@@ -14,6 +14,7 @@ import ActivationButton from './ActivationButton';
 import SignOutButton from '@/app/components/SignOutButton';
 import ConversationInfo from './ConversationInfo';
 import QueryForm from './QueryForm';
+import { useSession } from 'next-auth/react';
 
 const assistantName = 'apex';
 
@@ -30,6 +31,8 @@ export default function Assistant() {
     const [assistantActivated, setAssistantActivated] = useState<boolean>(false);
     const [displayPanel, setDisplayPanel] = useState<ReactElement>(<></>);
     const userIsSpeakingRef = useRef<boolean>(false);
+    const [userName, setUserName] = useState<string>('');
+    const { data: session } = useSession();
 
     const [isMounted, setIsMounted] = useState(false);
 
@@ -169,6 +172,12 @@ export default function Assistant() {
     }, [userQuery]);
 
     useEffect(() => {
+        if (session?.user?.name) {
+            setUserName(session.user.name.split(' ')[0]);
+        }
+    }, [session])
+
+    useEffect(() => {
         setIsMounted(true);
     }, []);
 
@@ -193,10 +202,9 @@ export default function Assistant() {
                             <QueryForm handleQueryFormSubmit={handleQueryFormSubmit} formInputValue={formInputValue} setFormInputValue={setFormInputValue} />
                         </div>
                     :
-                        ''
+                        userName ? <h2 className={styles.welcome_message}>Hello, {userName}. Tap the orb to initialize Apex.</h2> : ''
                 }
             </div>
         </div>
     )
-    
 }

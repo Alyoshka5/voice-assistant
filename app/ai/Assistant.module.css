@@ -42,6 +42,10 @@
     margin: 0 1rem;
 }
 
+.welcome_message {
+    color: #fff;
+}
+
 .conversation_content {
     height: 100%;
     display: flex;
