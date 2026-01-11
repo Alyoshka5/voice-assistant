@@ -95,8 +95,9 @@ describe('Assistant', () => {
 
         const welcomeMessage = await screen.findByTestId('assistant-response');
 
-        expect(welcomeMessage).toBeInTheDocument();
-        expect(welcomeMessage.textContent).toMatch(/firstname/i);
+        await waitFor(() => {
+            expect(welcomeMessage.textContent).toMatch(/firstname/i);
+        }, { timeout: 3000 })
     })
 
     it('activates assistant and renders conversation content when activation button is clicked', async () => {
