@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Apex | AI Voice Assistant
 
-## Getting Started
+Apex is a full-stack web app that makes productivity easier by bridging the gap between your voice and the Google ecosystem. By interpreting natural language, executing structured workflows, and providing a vocal response, Apex allows users to manage their Google tools (Calendar, Tasks, YouTube) hands-free.
 
-First, run the development server:
+## Technologies Used
+### Tech Stack
+- **Languages/Frameworks:** TypeScript, React, Next.js, Node.js
+- **DevOps & Infrastructure:** AWS (ECR/ECS), Docker, GitHub Actions
+- **Database:** PostgreSQL
+- **Testing:** Vitest (Unit/Integration), Playwright (E2E)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Integrations & APIs
+- **Intelligence:** OpenAI API (Function Calling & JSON Schema)
+- **Voice Interface:** Web Speech API (Real Time Speech-To-Text), Google Text-to-Speech API (Vocal Responses)
+- **Productivity & Tools:** Google Calendar API, Google Tasks API, Youtube Data API, Google Weather API
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## System Architecture & Logic Flow
+1. **Voice Trigger & Transcription**: The front end uses the Web Speech API to transcribe the user's speech and detect the wake word ("Apex"). Once activated, the audio is transcribed and sent to the Next.js backend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Intent Classification**: The backend utilizes OpenAI’s GPT models to classify the raw query into high-level categories (e.g. Calendar, Tasks, Other).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Domain-Specific Routing**: Requests are routed to specialized controllers (e.g. CalendarController). Here, the system uses OpenAI Function Calling to map natural language to specific, pre-defined JSON schemas.
 
-## Learn More
+4. **Action Execution**: The system executes the identified function (e.g. addEventToCalendar) by interfacing with external REST APIs (Google Calendar, Tasks, etc.). It then creates a natural language confirmation based on the API's response.
 
-To learn more about Next.js, take a look at the following resources:
+5. **Multimodal Feedback**: The final response is returned to the client, where it is simultaneously rendered in the UI and converted to audio using Google's Text-to-Speech API for a hands-free experience.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Implementation Examples
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Google Tasks Integration
+<img src="./public/demo-tasks.png" style="width: 100%; max-width: 75%;" alt="Apex assistant adding a task to Google Tasks">
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Youtube Integration
+<img src="./public/demo-youtube.png" style="width: 100%; max-width: 75%;" alt="Apex assistant finding and displaying a Youtube video">
